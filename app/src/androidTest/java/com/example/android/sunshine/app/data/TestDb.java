@@ -53,8 +53,8 @@ public class TestDb extends AndroidTestCase {
         // Note that there will be another table in the DB that stores the
         // Android metadata (db version information)
         final HashSet<String> tableNameHashSet = new HashSet<String>();
-        tableNameHashSet.add(WeatherContract.LocationEntry.TABLE_NAME);
-        tableNameHashSet.add(WeatherContract.WeatherEntry.TABLE_NAME);
+        tableNameHashSet.add(CalendarContract.LocationEntry.TABLE_NAME);
+        tableNameHashSet.add(CalendarContract.WeatherEntry.TABLE_NAME);
 
         mContext.deleteDatabase(WeatherDbHelper.DATABASE_NAME);
         SQLiteDatabase db = new WeatherDbHelper(
@@ -78,7 +78,7 @@ public class TestDb extends AndroidTestCase {
                 tableNameHashSet.isEmpty());
 
         // now, do our tables contain the correct columns?
-        c = db.rawQuery("PRAGMA table_info(" + WeatherContract.LocationEntry.TABLE_NAME + ")",
+        c = db.rawQuery("PRAGMA table_info(" + CalendarContract.LocationEntry.TABLE_NAME + ")",
                 null);
 
         assertTrue("Error: This means that we were unable to query the database for table information.",
@@ -86,11 +86,11 @@ public class TestDb extends AndroidTestCase {
 
         // Build a HashSet of all of the column names we want to look for
         final HashSet<String> locationColumnHashSet = new HashSet<String>();
-        locationColumnHashSet.add(WeatherContract.LocationEntry._ID);
-        locationColumnHashSet.add(WeatherContract.LocationEntry.COLUMN_CITY_NAME);
-        locationColumnHashSet.add(WeatherContract.LocationEntry.COLUMN_COORD_LAT);
-        locationColumnHashSet.add(WeatherContract.LocationEntry.COLUMN_COORD_LONG);
-        locationColumnHashSet.add(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING);
+        locationColumnHashSet.add(CalendarContract.LocationEntry._ID);
+        locationColumnHashSet.add(CalendarContract.LocationEntry.COLUMN_CITY_NAME);
+        locationColumnHashSet.add(CalendarContract.LocationEntry.COLUMN_COORD_LAT);
+        locationColumnHashSet.add(CalendarContract.LocationEntry.COLUMN_COORD_LONG);
+        locationColumnHashSet.add(CalendarContract.LocationEntry.COLUMN_LOCATION_SETTING);
 
         int columnNameIndex = c.getColumnIndex("name");
         do {
@@ -145,13 +145,13 @@ public class TestDb extends AndroidTestCase {
         ContentValues weatherValues = TestUtilities.createWeatherValues(locationRowId);
 
         // Third Step (Weather): Insert ContentValues into database and get a row ID back
-        long weatherRowId = db.insert(WeatherContract.WeatherEntry.TABLE_NAME, null, weatherValues);
+        long weatherRowId = db.insert(CalendarContract.WeatherEntry.TABLE_NAME, null, weatherValues);
         assertTrue(weatherRowId != -1);
 
         // Fourth Step: Query the database and receive a Cursor back
         // A cursor is your primary interface to the query results.
         Cursor weatherCursor = db.query(
-                WeatherContract.WeatherEntry.TABLE_NAME,  // Table to Query
+                CalendarContract.WeatherEntry.TABLE_NAME,  // Table to Query
                 null, // leaving "columns" null just returns all the columns.
                 null, // cols for "where" clause
                 null, // values for "where" clause
@@ -195,7 +195,7 @@ public class TestDb extends AndroidTestCase {
 
         // Third Step: Insert ContentValues into database and get a row ID back
         long locationRowId;
-        locationRowId = db.insert(WeatherContract.LocationEntry.TABLE_NAME, null, testValues);
+        locationRowId = db.insert(CalendarContract.LocationEntry.TABLE_NAME, null, testValues);
 
         // Verify we got a row back.
         assertTrue(locationRowId != -1);
@@ -206,7 +206,7 @@ public class TestDb extends AndroidTestCase {
         // Fourth Step: Query the database and receive a Cursor back
         // A cursor is your primary interface to the query results.
         Cursor cursor = db.query(
-                WeatherContract.LocationEntry.TABLE_NAME,  // Table to Query
+                CalendarContract.LocationEntry.TABLE_NAME,  // Table to Query
                 null, // all columns
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause

@@ -27,8 +27,8 @@ import android.os.Build;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
-import com.example.android.sunshine.app.data.WeatherContract.LocationEntry;
-import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
+import com.example.android.sunshine.app.data.CalendarContract.LocationEntry;
+import com.example.android.sunshine.app.data.CalendarContract.WeatherEntry;
 
 /*
     Note: This is not a complete set of tests of the Sunshine ContentProvider, but it does test
@@ -117,8 +117,8 @@ public class TestProvider extends AndroidTestCase {
 
             // Make sure that the registered authority matches the authority from the Contract.
             assertEquals("Error: CalendarProvider registered with authority: " + providerInfo.authority +
-                    " instead of authority: " + WeatherContract.CONTENT_AUTHORITY,
-                    providerInfo.authority, WeatherContract.CONTENT_AUTHORITY);
+                    " instead of authority: " + CalendarContract.CONTENT_AUTHORITY,
+                    providerInfo.authority, CalendarContract.CONTENT_AUTHORITY);
         } catch (PackageManager.NameNotFoundException e) {
             // I guess the provider isn't registered correctly.
             assertTrue("Error: CalendarProvider not registered at " + mContext.getPackageName(),
@@ -430,16 +430,16 @@ public class TestProvider extends AndroidTestCase {
 
         for ( int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++, currentTestDate+= millisecondsInADay ) {
             ContentValues weatherValues = new ContentValues();
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_LOC_KEY, locationRowId);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, currentTestDate);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, 1.1);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, 1.2 + 0.01 * (float) i);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, 1.3 - 0.01 * (float) i);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, 75 + i);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP, 65 - i);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC, "Asteroids");
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED, 5.5 + 0.2 * (float) i);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, 321);
+            weatherValues.put(CalendarContract.WeatherEntry.COLUMN_LOC_KEY, locationRowId);
+            weatherValues.put(CalendarContract.WeatherEntry.COLUMN_DATE, currentTestDate);
+            weatherValues.put(CalendarContract.WeatherEntry.COLUMN_DEGREES, 1.1);
+            weatherValues.put(CalendarContract.WeatherEntry.COLUMN_HUMIDITY, 1.2 + 0.01 * (float) i);
+            weatherValues.put(CalendarContract.WeatherEntry.COLUMN_PRESSURE, 1.3 - 0.01 * (float) i);
+            weatherValues.put(CalendarContract.WeatherEntry.COLUMN_MAX_TEMP, 75 + i);
+            weatherValues.put(CalendarContract.WeatherEntry.COLUMN_MIN_TEMP, 65 - i);
+            weatherValues.put(CalendarContract.WeatherEntry.COLUMN_SHORT_DESC, "Asteroids");
+            weatherValues.put(CalendarContract.WeatherEntry.COLUMN_WIND_SPEED, 5.5 + 0.2 * (float) i);
+            weatherValues.put(CalendarContract.WeatherEntry.COLUMN_WEATHER_ID, 321);
             returnContentValues[i] = weatherValues;
         }
         return returnContentValues;

@@ -34,8 +34,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.sunshine.app.data.WeatherContract;
-import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
+import com.example.android.sunshine.app.data.CalendarContract;
+import com.example.android.sunshine.app.data.CalendarContract.WeatherEntry;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -66,7 +66,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             WeatherEntry.COLUMN_WEATHER_ID,
             // This works because the CalendarProvider returns location data joined with
             // weather data, even though they're stored in two different tables.
-            WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING
+            CalendarContract.LocationEntry.COLUMN_LOCATION_SETTING
     };
 
     // These indices are tied to DETAIL_COLUMNS.  If DETAIL_COLUMNS changes, these
@@ -153,8 +153,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // replace the uri, since the location has changed
         Uri uri = mUri;
         if (null != uri) {
-            long date = WeatherContract.WeatherEntry.getDateFromUri(uri);
-            Uri updatedUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(newLocation, date);
+            long date = CalendarContract.WeatherEntry.getDateFromUri(uri);
+            Uri updatedUri = CalendarContract.WeatherEntry.buildWeatherLocationWithDate(newLocation, date);
             mUri = updatedUri;
             getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
         }

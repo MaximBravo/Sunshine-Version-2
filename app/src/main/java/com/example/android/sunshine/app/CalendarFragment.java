@@ -33,7 +33,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.android.sunshine.app.data.WeatherContract;
+import com.example.android.sunshine.app.data.CalendarContract;
 import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 
 /**
@@ -59,15 +59,15 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
             // On the one hand, that's annoying.  On the other, you can search the weather table
             // using the location set by the user, which is only in the Location table.
             // So the convenience is worth it.
-            WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
-            WeatherContract.WeatherEntry.COLUMN_DATE,
-            WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
-            WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
-            WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
-            WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING,
-            WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
-            WeatherContract.LocationEntry.COLUMN_COORD_LAT,
-            WeatherContract.LocationEntry.COLUMN_COORD_LONG
+            CalendarContract.WeatherEntry.TABLE_NAME + "." + CalendarContract.WeatherEntry._ID,
+            CalendarContract.WeatherEntry.COLUMN_DATE,
+            CalendarContract.WeatherEntry.COLUMN_SHORT_DESC,
+            CalendarContract.WeatherEntry.COLUMN_MAX_TEMP,
+            CalendarContract.WeatherEntry.COLUMN_MIN_TEMP,
+            CalendarContract.LocationEntry.COLUMN_LOCATION_SETTING,
+            CalendarContract.WeatherEntry.COLUMN_WEATHER_ID,
+            CalendarContract.LocationEntry.COLUMN_COORD_LAT,
+            CalendarContract.LocationEntry.COLUMN_COORD_LONG
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
@@ -151,7 +151,7 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
                 if (cursor != null) {
                     String locationSetting = Utility.getPreferredLocation(getActivity());
                     ((Callback) getActivity())
-                            .onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
+                            .onItemSelected(CalendarContract.WeatherEntry.buildWeatherLocationWithDate(
                                     locationSetting, cursor.getLong(COL_WEATHER_DATE)
                             ));
                 }
@@ -236,10 +236,10 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
         // dates after or including today.
 
         // Sort order:  Ascending, by date.
-        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
+        String sortOrder = CalendarContract.WeatherEntry.COLUMN_DATE + " ASC";
 
         String locationSetting = Utility.getPreferredLocation(getActivity());
-        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
+        Uri weatherForLocationUri = CalendarContract.WeatherEntry.buildWeatherLocationWithStartDate(
                 locationSetting, System.currentTimeMillis());
 
         return new CursorLoader(getActivity(),

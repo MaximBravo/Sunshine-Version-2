@@ -30,7 +30,7 @@ import android.util.Log;
 import com.example.android.sunshine.app.MainActivity;
 import com.example.android.sunshine.app.R;
 import com.example.android.sunshine.app.Utility;
-import com.example.android.sunshine.app.data.WeatherContract;
+import com.example.android.sunshine.app.data.CalendarContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,10 +55,10 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
 
     private static final String[] NOTIFY_WEATHER_PROJECTION = new String[] {
-            WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
-            WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
-            WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
-            WeatherContract.WeatherEntry.COLUMN_SHORT_DESC
+            CalendarContract.WeatherEntry.COLUMN_WEATHER_ID,
+            CalendarContract.WeatherEntry.COLUMN_MAX_TEMP,
+            CalendarContract.WeatherEntry.COLUMN_MIN_TEMP,
+            CalendarContract.WeatherEntry.COLUMN_SHORT_DESC
     };
 
     // these indices must match the projection
@@ -274,16 +274,16 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 ContentValues weatherValues = new ContentValues();
 
-                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_LOC_KEY, locationId);
-                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, dateTime);
-                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, humidity);
-                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, pressure);
-                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED, windSpeed);
-                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, windDirection);
-                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, high);
-                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP, low);
-                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC, description);
-                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, weatherId);
+                weatherValues.put(CalendarContract.WeatherEntry.COLUMN_LOC_KEY, locationId);
+                weatherValues.put(CalendarContract.WeatherEntry.COLUMN_DATE, dateTime);
+                weatherValues.put(CalendarContract.WeatherEntry.COLUMN_HUMIDITY, humidity);
+                weatherValues.put(CalendarContract.WeatherEntry.COLUMN_PRESSURE, pressure);
+                weatherValues.put(CalendarContract.WeatherEntry.COLUMN_WIND_SPEED, windSpeed);
+                weatherValues.put(CalendarContract.WeatherEntry.COLUMN_DEGREES, windDirection);
+                weatherValues.put(CalendarContract.WeatherEntry.COLUMN_MAX_TEMP, high);
+                weatherValues.put(CalendarContract.WeatherEntry.COLUMN_MIN_TEMP, low);
+                weatherValues.put(CalendarContract.WeatherEntry.COLUMN_SHORT_DESC, description);
+                weatherValues.put(CalendarContract.WeatherEntry.COLUMN_WEATHER_ID, weatherId);
 
                 cVVector.add(weatherValues);
             }
@@ -293,11 +293,11 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             if ( cVVector.size() > 0 ) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
-                getContext().getContentResolver().bulkInsert(WeatherContract.WeatherEntry.CONTENT_URI, cvArray);
+                getContext().getContentResolver().bulkInsert(CalendarContract.WeatherEntry.CONTENT_URI, cvArray);
 
                 // delete old data so we don't build up an endless history
-                getContext().getContentResolver().delete(WeatherContract.WeatherEntry.CONTENT_URI,
-                        WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
+                getContext().getContentResolver().delete(CalendarContract.WeatherEntry.CONTENT_URI,
+                        CalendarContract.WeatherEntry.COLUMN_DATE + " <= ?",
                         new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
 
                 notifyWeather();
@@ -328,7 +328,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 // Last sync was more than 1 day ago, let's send a notification with the weather.
                 String locationQuery = Utility.getPreferredLocation(context);
 
-                Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationQuery, System.currentTimeMillis());
+                Uri weatherUri = CalendarContract.WeatherEntry.buildWeatherLocationWithDate(locationQuery, System.currentTimeMillis());
 
                 // we'll query our contentProvider, as always
                 Cursor cursor = context.getContentResolver().query(weatherUri, NOTIFY_WEATHER_PROJECTION, null, null, null);
@@ -407,14 +407,14 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
         // First, check if the location with this city name exists in the db
         Cursor locationCursor = getContext().getContentResolver().query(
-                WeatherContract.LocationEntry.CONTENT_URI,
-                new String[]{WeatherContract.LocationEntry._ID},
-                WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?",
+                CalendarContract.LocationEntry.CONTENT_URI,
+                new String[]{CalendarContract.LocationEntry._ID},
+                CalendarContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?",
                 new String[]{locationSetting},
                 null);
 
         if (locationCursor.moveToFirst()) {
-            int locationIdIndex = locationCursor.getColumnIndex(WeatherContract.LocationEntry._ID);
+            int locationIdIndex = locationCursor.getColumnIndex(CalendarContract.LocationEntry._ID);
             locationId = locationCursor.getLong(locationIdIndex);
         } else {
             // Now that the content provider is set up, inserting rows of data is pretty simple.
@@ -423,14 +423,14 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
             // Then add the data, along with the corresponding name of the data type,
             // so the content provider knows what kind of value is being inserted.
-            locationValues.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, cityName);
-            locationValues.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
-            locationValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, lat);
-            locationValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, lon);
+            locationValues.put(CalendarContract.LocationEntry.COLUMN_CITY_NAME, cityName);
+            locationValues.put(CalendarContract.LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
+            locationValues.put(CalendarContract.LocationEntry.COLUMN_COORD_LAT, lat);
+            locationValues.put(CalendarContract.LocationEntry.COLUMN_COORD_LONG, lon);
 
             // Finally, insert location data into the database.
             Uri insertedUri = getContext().getContentResolver().insert(
-                    WeatherContract.LocationEntry.CONTENT_URI,
+                    CalendarContract.LocationEntry.CONTENT_URI,
                     locationValues
             );
 
