@@ -52,7 +52,7 @@ public class CalendarAdapter extends CursorAdapter {
         int layoutId = -1;
         switch (viewType) {
             case VIEW_TYPE_TODAY: {
-                layoutId = R.layout.list_item_forecast_today;
+                layoutId = R.layout.list_item_calendar_today;
                 break;
             }
             case VIEW_TYPE_FUTURE_DAY: {
