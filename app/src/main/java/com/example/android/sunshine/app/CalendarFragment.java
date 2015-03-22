@@ -37,7 +37,7 @@ import com.example.android.sunshine.app.data.CalendarContract;
 import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 
 /**
- * Encapsulates fetching the forecast and displaying it as a {@link ListView} layout.
+ * Encapsulates fetching the calendar and displaying it as a {@link ListView} layout.
  */
 public class CalendarFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String LOG_TAG = CalendarFragment.class.getSimpleName();
@@ -49,10 +49,10 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
 
     private static final String SELECTED_KEY = "selected_position";
 
-    private static final int FORECAST_LOADER = 0;
-    // For the forecast view we're showing only a small subset of the stored data.
+    private static final int CALENDAR_LOADER = 0;
+    // For the calendar view we're showing only a small subset of the stored data.
     // Specify the columns we need.
-    private static final String[] FORECAST_COLUMNS = {
+    private static final String[] CALENDAR_COLUMNS = {
             // In this case the id needs to be fully qualified with a table name, since
             // the content provider joins the location & weather tables in the background
             // (both have an _id column)
@@ -70,7 +70,7 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
             CalendarContract.LocationEntry.COLUMN_COORD_LONG
     };
 
-    // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
+    // These indices are tied to CALENDAR_COLUMNS.  If CALENDAR_COLUMNS changes, these
     // must change.
     static final int COL_WEATHER_ID = 0;
     static final int COL_WEATHER_DATE = 1;
@@ -138,7 +138,7 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
-        mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        mListView = (ListView) rootView.findViewById(R.id.listview_calendar);
         mListView.setAdapter(mCalendarAdapter);
         // We'll call our MainActivity
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -177,14 +177,14 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(FORECAST_LOADER, null, this);
+        getLoaderManager().initLoader(CALENDAR_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
     // since we read the location when we create the loader, all we need to do is restart things
     void onLocationChanged( ) {
         updateWeather();
-        getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
+        getLoaderManager().restartLoader(CALENDAR_LOADER, null, this);
     }
 
     private void updateWeather() {
@@ -244,7 +244,7 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
 
         return new CursorLoader(getActivity(),
                 weatherForLocationUri,
-                FORECAST_COLUMNS,
+                CALENDAR_COLUMNS,
                 null,
                 null,
                 sortOrder);

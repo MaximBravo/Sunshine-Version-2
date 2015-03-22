@@ -12,7 +12,7 @@
     -->
 
     <fragment
-        android:id="@+id/fragment_forecast"
+        android:id="@+id/fragment_calendar"
         android:name="com.example.android.sunshine.app.CalendarFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"

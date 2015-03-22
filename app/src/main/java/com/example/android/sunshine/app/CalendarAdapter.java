@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * {@link CalendarAdapter} exposes a list of weather forecasts
+ * {@link CalendarAdapter} exposes a list of weather calendars
  * from a {@link Cursor} to a {@link android.widget.ListView}.
  */
 public class CalendarAdapter extends CursorAdapter {
@@ -23,7 +23,7 @@ public class CalendarAdapter extends CursorAdapter {
     private boolean mUseTodayLayout = true;
 
     /**
-     * Cache of the children views for a forecast list item.
+     * Cache of the children views for a calendar list item.
      */
     public static class ViewHolder {
         public final ImageView iconView;
@@ -35,7 +35,7 @@ public class CalendarAdapter extends CursorAdapter {
         public ViewHolder(View view) {
             iconView = (ImageView) view.findViewById(R.id.list_item_icon);
             dateView = (TextView) view.findViewById(R.id.list_item_date_textview);
-            descriptionView = (TextView) view.findViewById(R.id.list_item_forecast_textview);
+            descriptionView = (TextView) view.findViewById(R.id.list_item_calendar_textview);
             highTempView = (TextView) view.findViewById(R.id.list_item_high_textview);
             lowTempView = (TextView) view.findViewById(R.id.list_item_low_textview);
         }
@@ -95,9 +95,9 @@ public class CalendarAdapter extends CursorAdapter {
         // Find TextView and set formatted date on it
         viewHolder.dateView.setText(Utility.getFriendlyDayString(context, dateInMillis));
 
-        // Read weather forecast from cursor
+        // Read weather calendar from cursor
         String description = cursor.getString(CalendarFragment.COL_WEATHER_DESC);
-        // Find TextView and set weather forecast on it
+        // Find TextView and set weather calendar on it
         viewHolder.descriptionView.setText(description);
 
         // For accessibility, add a content description to the icon field

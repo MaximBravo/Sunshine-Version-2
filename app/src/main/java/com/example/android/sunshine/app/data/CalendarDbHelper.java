@@ -51,8 +51,8 @@ public class CalendarDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + WeatherEntry.TABLE_NAME + " (" +
                 // Why AutoIncrement here, and not above?
                 // Unique keys will be auto-generated in either case.  But for weather
-                // forecasting, it's reasonable to assume the user will want information
-                // for a certain date and all dates *following*, so the forecast data
+                // calendaring, it's reasonable to assume the user will want information
+                // for a certain date and all dates *following*, so the calendar data
                 // should be sorted accordingly.
                 WeatherEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 

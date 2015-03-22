@@ -57,7 +57,7 @@ public class MainActivity extends ActionBarActivity implements CalendarFragment.
         }
 
         CalendarFragment calendarFragment =  ((CalendarFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_forecast));
+                .findFragmentById(R.id.fragment_calendar));
         calendarFragment.setUseTodayLayout(!mTwoPane);
 
         SunshineSyncAdapter.initializeSyncAdapter(this);
@@ -92,7 +92,7 @@ public class MainActivity extends ActionBarActivity implements CalendarFragment.
         String location = Utility.getPreferredLocation( this );
         // update the location in our second pane using the fragment manager
             if (location != null && !location.equals(mLocation)) {
-            CalendarFragment ff = (CalendarFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
+            CalendarFragment ff = (CalendarFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_calendar);
             if ( null != ff ) {
                 ff.onLocationChanged();
             }
