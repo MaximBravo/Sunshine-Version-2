@@ -178,70 +178,70 @@ public class Utility {
     }
 
     /**
-     * Helper method to provide the icon resource id according to the weather condition id returned
+     * Helper method to provide the icon resource id according to the event condition id returned
      * by the OpenWeatherMap call.
-     * @param weatherId from OpenWeatherMap API response
+     * @param eventId from OpenWeatherMap API response
      * @return resource id for the corresponding icon. -1 if no relation is found.
      */
-    public static int getIconResourceForWeatherCondition(int weatherId) {
-        // Based on weather code data found at:
-        // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
-        if (weatherId >= 200 && weatherId <= 232) {
+    public static int getIconResourceForWeatherCondition(int eventId) {
+        // Based on event code data found at:
+        // http://bugs.openeventmap.org/projects/api/wiki/Weather_Condition_Codes
+        if (eventId >= 200 && eventId <= 232) {
             return R.drawable.ic_storm;
-        } else if (weatherId >= 300 && weatherId <= 321) {
+        } else if (eventId >= 300 && eventId <= 321) {
             return R.drawable.ic_light_rain;
-        } else if (weatherId >= 500 && weatherId <= 504) {
+        } else if (eventId >= 500 && eventId <= 504) {
             return R.drawable.ic_rain;
-        } else if (weatherId == 511) {
+        } else if (eventId == 511) {
             return R.drawable.ic_snow;
-        } else if (weatherId >= 520 && weatherId <= 531) {
+        } else if (eventId >= 520 && eventId <= 531) {
             return R.drawable.ic_rain;
-        } else if (weatherId >= 600 && weatherId <= 622) {
+        } else if (eventId >= 600 && eventId <= 622) {
             return R.drawable.ic_snow;
-        } else if (weatherId >= 701 && weatherId <= 761) {
+        } else if (eventId >= 701 && eventId <= 761) {
             return R.drawable.ic_fog;
-        } else if (weatherId == 761 || weatherId == 781) {
+        } else if (eventId == 761 || eventId == 781) {
             return R.drawable.ic_storm;
-        } else if (weatherId == 800) {
+        } else if (eventId == 800) {
             return R.drawable.ic_clear;
-        } else if (weatherId == 801) {
+        } else if (eventId == 801) {
             return R.drawable.ic_light_clouds;
-        } else if (weatherId >= 802 && weatherId <= 804) {
+        } else if (eventId >= 802 && eventId <= 804) {
             return R.drawable.ic_cloudy;
         }
         return -1;
     }
 
     /**
-     * Helper method to provide the art resource id according to the weather condition id returned
+     * Helper method to provide the art resource id according to the event condition id returned
      * by the OpenWeatherMap call.
-     * @param weatherId from OpenWeatherMap API response
+     * @param eventId from OpenWeatherMap API response
      * @return resource id for the corresponding icon. -1 if no relation is found.
      */
-    public static int getArtResourceForWeatherCondition(int weatherId) {
-        // Based on weather code data found at:
-        // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
-        if (weatherId >= 200 && weatherId <= 232) {
+    public static int getArtResourceForWeatherCondition(int eventId) {
+        // Based on event code data found at:
+        // http://bugs.openeventmap.org/projects/api/wiki/Weather_Condition_Codes
+        if (eventId >= 200 && eventId <= 232) {
             return R.drawable.art_storm;
-        } else if (weatherId >= 300 && weatherId <= 321) {
+        } else if (eventId >= 300 && eventId <= 321) {
             return R.drawable.art_light_rain;
-        } else if (weatherId >= 500 && weatherId <= 504) {
+        } else if (eventId >= 500 && eventId <= 504) {
             return R.drawable.art_rain;
-        } else if (weatherId == 511) {
+        } else if (eventId == 511) {
             return R.drawable.art_snow;
-        } else if (weatherId >= 520 && weatherId <= 531) {
+        } else if (eventId >= 520 && eventId <= 531) {
             return R.drawable.art_rain;
-        } else if (weatherId >= 600 && weatherId <= 622) {
+        } else if (eventId >= 600 && eventId <= 622) {
             return R.drawable.art_snow;
-        } else if (weatherId >= 701 && weatherId <= 761) {
+        } else if (eventId >= 701 && eventId <= 761) {
             return R.drawable.art_fog;
-        } else if (weatherId == 761 || weatherId == 781) {
+        } else if (eventId == 761 || eventId == 781) {
             return R.drawable.art_storm;
-        } else if (weatherId == 800) {
+        } else if (eventId == 800) {
             return R.drawable.art_clear;
-        } else if (weatherId == 801) {
+        } else if (eventId == 801) {
             return R.drawable.art_light_clouds;
-        } else if (weatherId >= 802 && weatherId <= 804) {
+        } else if (eventId >= 802 && eventId <= 804) {
             return R.drawable.art_clouds;
         }
         return -1;

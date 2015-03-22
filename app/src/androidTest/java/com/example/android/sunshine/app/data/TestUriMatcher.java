@@ -30,7 +30,7 @@ public class TestUriMatcher extends AndroidTestCase {
     private static final long TEST_DATE = 1419033600L;  // December 20th, 2014
     private static final long TEST_LOCATION_ID = 10L;
 
-    // content://com.example.android.sunshine.app/weather"
+    // content://com.example.android.sunshine.app/event"
     private static final Uri TEST_WEATHER_DIR = EventContract.WeatherEntry.CONTENT_URI;
     private static final Uri TEST_WEATHER_WITH_LOCATION_DIR = EventContract.WeatherEntry.buildWeatherLocation(LOCATION_QUERY);
     private static final Uri TEST_WEATHER_WITH_LOCATION_AND_DATE_DIR = EventContract.WeatherEntry.buildWeatherLocationWithDate(LOCATION_QUERY, TEST_DATE);

@@ -29,7 +29,7 @@ public class TestWeatherContract extends AndroidTestCase {
     private static final long TEST_WEATHER_DATE = 1419033600L;  // December 20th, 2014
 
     /*
-        Students: Uncomment this out to test your weather location function.
+        Students: Uncomment this out to test your event location function.
      */
     public void testBuildWeatherLocation() {
         Uri locationUri = EventContract.WeatherEntry.buildWeatherLocation(TEST_WEATHER_LOCATION);
@@ -40,6 +40,6 @@ public class TestWeatherContract extends AndroidTestCase {
                 TEST_WEATHER_LOCATION, locationUri.getLastPathSegment());
         assertEquals("Error: Weather location Uri doesn't match our expected result",
                 locationUri.toString(),
-                "content://com.example.android.sunshine.app/weather/%2FNorth%20Pole");
+                "content://com.example.android.sunshine.app/event/%2FNorth%20Pole");
     }
 }

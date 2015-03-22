@@ -46,7 +46,7 @@ public class TestDb extends AndroidTestCase {
         a good time to change your column names to match mine.
 
         Note that this only tests that the Location table has the correct columns, since we
-        give you the code for the weather table.  This test does not look at the
+        give you the code for the event table.  This test does not look at the
      */
     public void testCreateDb() throws Throwable {
         // build a HashSet of all of the table names we wish to look for
@@ -73,8 +73,8 @@ public class TestDb extends AndroidTestCase {
         } while( c.moveToNext() );
 
         // if this fails, it means that your database doesn't contain both the location entry
-        // and weather entry tables
-        assertTrue("Error: Your database was created without both the location entry and weather entry tables",
+        // and event entry tables
+        assertTrue("Error: Your database was created without both the location entry and event entry tables",
                 tableNameHashSet.isEmpty());
 
         // now, do our tables contain the correct columns?
@@ -123,7 +123,7 @@ public class TestDb extends AndroidTestCase {
      */
     public void testWeatherTable() {
         // First insert the location, and then use the locationRowId to insert
-        // the weather. Make sure to cover as many failure cases as you can.
+        // the event. Make sure to cover as many failure cases as you can.
 
         // Instead of rewriting all of the code we've already written in testLocationTable
         // we can move this code to insertLocation and then call insertLocation from both
@@ -141,16 +141,16 @@ public class TestDb extends AndroidTestCase {
         EventDbHelper dbHelper = new EventDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        // Second Step (Weather): Create weather values
-        ContentValues weatherValues = TestUtilities.createWeatherValues(locationRowId);
+        // Second Step (Weather): Create event values
+        ContentValues eventValues = TestUtilities.createWeatherValues(locationRowId);
 
         // Third Step (Weather): Insert ContentValues into database and get a row ID back
-        long weatherRowId = db.insert(EventContract.WeatherEntry.TABLE_NAME, null, weatherValues);
-        assertTrue(weatherRowId != -1);
+        long eventRowId = db.insert(EventContract.WeatherEntry.TABLE_NAME, null, eventValues);
+        assertTrue(eventRowId != -1);
 
         // Fourth Step: Query the database and receive a Cursor back
         // A cursor is your primary interface to the query results.
-        Cursor weatherCursor = db.query(
+        Cursor eventCursor = db.query(
                 EventContract.WeatherEntry.TABLE_NAME,  // Table to Query
                 null, // leaving "columns" null just returns all the columns.
                 null, // cols for "where" clause
@@ -161,18 +161,18 @@ public class TestDb extends AndroidTestCase {
         );
 
         // Move the cursor to the first valid database row and check to see if we have any rows
-        assertTrue( "Error: No Records returned from location query", weatherCursor.moveToFirst() );
+        assertTrue( "Error: No Records returned from location query", eventCursor.moveToFirst() );
 
         // Fifth Step: Validate the location Query
-        TestUtilities.validateCurrentRecord("testInsertReadDb weatherEntry failed to validate",
-                weatherCursor, weatherValues);
+        TestUtilities.validateCurrentRecord("testInsertReadDb eventEntry failed to validate",
+                eventCursor, eventValues);
 
         // Move the cursor to demonstrate that there is only one record in the database
-        assertFalse( "Error: More than one record returned from weather query",
-                weatherCursor.moveToNext() );
+        assertFalse( "Error: More than one record returned from event query",
+                eventCursor.moveToNext() );
 
         // Sixth Step: Close cursor and database
-        weatherCursor.close();
+        eventCursor.close();
         dbHelper.close();
     }
 

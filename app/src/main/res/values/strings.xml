@@ -16,7 +16,7 @@
     <string name="action_map">Map Location</string>
     <string name="action_share">Share</string>
 
-    <!-- Menu label to fetch updated weather info from the server -->
+    <!-- Menu label to fetch updated event info from the server -->
     <string name="action_refresh" translatable="false">Refresh</string>
     <string name="title_activity_detail">Details</string>
     <string name="title_activity_settings">Settings</string>
@@ -38,7 +38,7 @@
     <string name="pref_enable_notifications_false">Not Enabled</string>
     <string name="pref_enable_notifications_default" translatable="false">true</string>
 
-    <!-- Strings for formatting weather-related data -->
+    <!-- Strings for formatting event-related data -->
 
     <!-- Label for the temperature units preference [CHAR LIMIT=30] -->
     <string name="pref_units_label">Temperature Units</string>
@@ -68,7 +68,7 @@
     <!-- Date format [CHAR LIMIT=NONE] -->
     <string name="format_full_friendly_date"><xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g></string>
 
-    <!-- Strings for formatting weather-related data -->
+    <!-- Strings for formatting event-related data -->
     <!-- Temperature format [CHAR LIMIT=5 -->
     <string name="format_temperature"><xliff:g id="temp">%1.0f</xliff:g>\u00B0</string>
 

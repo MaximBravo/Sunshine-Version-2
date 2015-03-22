@@ -35,7 +35,7 @@
 
         </LinearLayout>
 
-        <!-- Main content: high, low, art, weather state -->
+        <!-- Main content: high, low, art, event state -->
         <LinearLayout
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"

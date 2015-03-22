@@ -54,9 +54,9 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
     // Specify the columns we need.
     private static final String[] CALENDAR_COLUMNS = {
             // In this case the id needs to be fully qualified with a table name, since
-            // the content provider joins the location & weather tables in the background
+            // the content provider joins the location & event tables in the background
             // (both have an _id column)
-            // On the one hand, that's annoying.  On the other, you can search the weather table
+            // On the one hand, that's annoying.  On the other, you can search the event table
             // using the location set by the user, which is only in the Location table.
             // So the convenience is worth it.
             EventContract.WeatherEntry.TABLE_NAME + "." + EventContract.WeatherEntry._ID,
@@ -232,18 +232,18 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
         // This is called when a new Loader needs to be created.  This
         // fragment only uses one loader, so we don't care about checking the id.
 
-        // To only show current and future dates, filter the query to return weather only for
+        // To only show current and future dates, filter the query to return event only for
         // dates after or including today.
 
         // Sort order:  Ascending, by date.
         String sortOrder = EventContract.WeatherEntry.COLUMN_DATE + " ASC";
 
         String locationSetting = Utility.getPreferredLocation(getActivity());
-        Uri weatherForLocationUri = EventContract.WeatherEntry.buildWeatherLocationWithStartDate(
+        Uri eventForLocationUri = EventContract.WeatherEntry.buildWeatherLocationWithStartDate(
                 locationSetting, System.currentTimeMillis());
 
         return new CursorLoader(getActivity(),
-                weatherForLocationUri,
+                eventForLocationUri,
                 CALENDAR_COLUMNS,
                 null,
                 null,

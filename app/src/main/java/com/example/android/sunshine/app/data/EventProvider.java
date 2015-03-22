@@ -41,7 +41,7 @@ public class EventProvider extends ContentProvider {
         sWeatherByLocationSettingQueryBuilder = new SQLiteQueryBuilder();
         
         //This is an inner join which looks like
-        //weather INNER JOIN location ON weather.location_id = location._id
+        //event INNER JOIN location ON event.location_id = location._id
         sWeatherByLocationSettingQueryBuilder.setTables(
                 EventContract.WeatherEntry.TABLE_NAME + " INNER JOIN " +
                         EventContract.LocationEntry.TABLE_NAME +
@@ -176,18 +176,18 @@ public class EventProvider extends ContentProvider {
         // and query the database accordingly.
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
-            // "weather/*/*"
+            // "event/*/*"
             case WEATHER_WITH_LOCATION_AND_DATE:
             {
                 retCursor = getWeatherByLocationSettingAndDate(uri, projection, sortOrder);
                 break;
             }
-            // "weather/*"
+            // "event/*"
             case WEATHER_WITH_LOCATION: {
                 retCursor = getWeatherByLocationSetting(uri, projection, sortOrder);
                 break;
             }
-            // "weather"
+            // "event"
             case WEATHER: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         EventContract.WeatherEntry.TABLE_NAME,

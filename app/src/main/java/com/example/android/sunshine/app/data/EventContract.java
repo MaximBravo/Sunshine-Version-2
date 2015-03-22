@@ -22,7 +22,7 @@ import android.provider.BaseColumns;
 import android.text.format.Time;
 
 /**
- * Defines table and column names for the weather database.
+ * Defines table and column names for the event database.
  */
 public class EventContract {
 
@@ -37,11 +37,11 @@ public class EventContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     // Possible paths (appended to base content URI for possible URI's)
-    // For instance, content://com.example.android.sunshine.app/weather/ is a valid path for
-    // looking at weather data. content://com.example.android.sunshine.app/givemeroot/ will fail,
+    // For instance, content://com.example.android.sunshine.app/event/ is a valid path for
+    // looking at event data. content://com.example.android.sunshine.app/givemeroot/ will fail,
     // as the ContentProvider hasn't been given any information on what to do with "givemeroot".
     // At least, let's hope not.  Don't be that dev, reader.  Don't be that dev.
-    public static final String PATH_WEATHER = "weather";
+    public static final String PATH_WEATHER = "event";
     public static final String PATH_LOCATION = "location";
 
     // To make it easy to query for the exact date, we normalize all dates that go into
@@ -68,7 +68,7 @@ public class EventContract {
         // Table name
         public static final String TABLE_NAME = "location";
 
-        // The location setting string is what will be sent to openweathermap
+        // The location setting string is what will be sent to openeventmap
         // as the location query.
         public static final String COLUMN_LOCATION_SETTING = "location_setting";
 
@@ -77,7 +77,7 @@ public class EventContract {
         public static final String COLUMN_CITY_NAME = "city_name";
 
         // In order to uniquely pinpoint the location on the map when we launch the
-        // map intent, we store the latitude and longitude as returned by openweathermap.
+        // map intent, we store the latitude and longitude as returned by openeventmap.
         public static final String COLUMN_COORD_LAT = "coord_lat";
         public static final String COLUMN_COORD_LONG = "coord_long";
 
@@ -86,7 +86,7 @@ public class EventContract {
         }
     }
 
-    /* Inner class that defines the table contents of the weather table */
+    /* Inner class that defines the table contents of the event table */
     public static final class WeatherEntry implements BaseColumns {
 
         public static final Uri CONTENT_URI =
@@ -97,16 +97,16 @@ public class EventContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_WEATHER;
 
-        public static final String TABLE_NAME = "weather";
+        public static final String TABLE_NAME = "event";
 
         // Column with the foreign key into the location table.
         public static final String COLUMN_LOC_KEY = "location_id";
         // Date, stored as long in milliseconds since the epoch
         public static final String COLUMN_DATE = "date";
         // Weather id as returned by API, to identify the icon to be used
-        public static final String COLUMN_WEATHER_ID = "weather_id";
+        public static final String COLUMN_WEATHER_ID = "event_id";
 
-        // Short description and long description of the weather, as provided by API.
+        // Short description and long description of the event, as provided by API.
         // e.g "clear" vs "sky is clear".
         public static final String COLUMN_SHORT_DESC = "short_desc";
 

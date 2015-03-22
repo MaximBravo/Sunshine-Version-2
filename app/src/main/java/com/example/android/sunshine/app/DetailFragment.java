@@ -65,7 +65,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             WeatherEntry.COLUMN_DEGREES,
             WeatherEntry.COLUMN_WEATHER_ID,
             // This works because the EventProvider returns location data joined with
-            // weather data, even though they're stored in two different tables.
+            // event data, even though they're stored in two different tables.
             EventContract.LocationEntry.COLUMN_LOCATION_SETTING
     };
 
@@ -180,11 +180,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data != null && data.moveToFirst()) {
-            // Read weather condition ID from cursor
-            int weatherId = data.getInt(COL_WEATHER_CONDITION_ID);
+            // Read event condition ID from cursor
+            int eventId = data.getInt(COL_WEATHER_CONDITION_ID);
 
-            // Use weather art image
-            mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
+            // Use event art image
+            mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(eventId));
 
             // Read date from cursor and update views for day of week and date
             long date = data.getLong(COL_WEATHER_DATE);

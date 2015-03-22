@@ -44,22 +44,22 @@ public class TestUtilities extends AndroidTestCase {
     }
 
     /*
-        Students: Use this to create some default weather values for your database tests.
+        Students: Use this to create some default event values for your database tests.
      */
     static ContentValues createWeatherValues(long locationRowId) {
-        ContentValues weatherValues = new ContentValues();
-        weatherValues.put(EventContract.WeatherEntry.COLUMN_LOC_KEY, locationRowId);
-        weatherValues.put(EventContract.WeatherEntry.COLUMN_DATE, TEST_DATE);
-        weatherValues.put(EventContract.WeatherEntry.COLUMN_DEGREES, 1.1);
-        weatherValues.put(EventContract.WeatherEntry.COLUMN_HUMIDITY, 1.2);
-        weatherValues.put(EventContract.WeatherEntry.COLUMN_PRESSURE, 1.3);
-        weatherValues.put(EventContract.WeatherEntry.COLUMN_MAX_TEMP, 75);
-        weatherValues.put(EventContract.WeatherEntry.COLUMN_MIN_TEMP, 65);
-        weatherValues.put(EventContract.WeatherEntry.COLUMN_SHORT_DESC, "Asteroids");
-        weatherValues.put(EventContract.WeatherEntry.COLUMN_WIND_SPEED, 5.5);
-        weatherValues.put(EventContract.WeatherEntry.COLUMN_WEATHER_ID, 321);
+        ContentValues eventValues = new ContentValues();
+        eventValues.put(EventContract.WeatherEntry.COLUMN_LOC_KEY, locationRowId);
+        eventValues.put(EventContract.WeatherEntry.COLUMN_DATE, TEST_DATE);
+        eventValues.put(EventContract.WeatherEntry.COLUMN_DEGREES, 1.1);
+        eventValues.put(EventContract.WeatherEntry.COLUMN_HUMIDITY, 1.2);
+        eventValues.put(EventContract.WeatherEntry.COLUMN_PRESSURE, 1.3);
+        eventValues.put(EventContract.WeatherEntry.COLUMN_MAX_TEMP, 75);
+        eventValues.put(EventContract.WeatherEntry.COLUMN_MIN_TEMP, 65);
+        eventValues.put(EventContract.WeatherEntry.COLUMN_SHORT_DESC, "Asteroids");
+        eventValues.put(EventContract.WeatherEntry.COLUMN_WIND_SPEED, 5.5);
+        eventValues.put(EventContract.WeatherEntry.COLUMN_WEATHER_ID, 321);
 
-        return weatherValues;
+        return eventValues;
     }
 
     /*
