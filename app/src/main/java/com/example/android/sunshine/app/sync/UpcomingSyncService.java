@@ -7,20 +7,20 @@ import android.util.Log;
 
 public class UpcomingSyncService extends Service {
     private static final Object sSyncAdapterLock = new Object();
-    private static SunshineSyncAdapter sSunshineSyncAdapter = null;
+    private static UpcomingSyncAdapter sUpcomingSyncAdapter = null;
 
     @Override
     public void onCreate() {
         Log.d("UpcomingSyncService", "onCreate - UpcomingSyncService");
         synchronized (sSyncAdapterLock) {
-            if (sSunshineSyncAdapter == null) {
-                sSunshineSyncAdapter = new SunshineSyncAdapter(getApplicationContext(), true);
+            if (sUpcomingSyncAdapter == null) {
+                sUpcomingSyncAdapter = new UpcomingSyncAdapter(getApplicationContext(), true);
             }
         }
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return sSunshineSyncAdapter.getSyncAdapterBinder();
+        return sUpcomingSyncAdapter.getSyncAdapterBinder();
     }
 }

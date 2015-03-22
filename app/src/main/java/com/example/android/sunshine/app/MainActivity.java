@@ -22,7 +22,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
+import com.example.android.sunshine.app.sync.UpcomingSyncAdapter;
 
 public class MainActivity extends ActionBarActivity implements CalendarFragment.Callback {
 
@@ -60,7 +60,7 @@ public class MainActivity extends ActionBarActivity implements CalendarFragment.
                 .findFragmentById(R.id.fragment_calendar));
         calendarFragment.setUseTodayLayout(!mTwoPane);
 
-        SunshineSyncAdapter.initializeSyncAdapter(this);
+        UpcomingSyncAdapter.initializeSyncAdapter(this);
     }
 
     @Override

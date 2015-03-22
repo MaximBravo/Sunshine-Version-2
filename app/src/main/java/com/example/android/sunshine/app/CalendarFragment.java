@@ -34,7 +34,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.sunshine.app.data.EventContract;
-import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
+import com.example.android.sunshine.app.sync.UpcomingSyncAdapter;
 
 /**
  * Encapsulates fetching the calendar and displaying it as a {@link ListView} layout.
@@ -188,7 +188,7 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void updateEvent() {
-        SunshineSyncAdapter.syncImmediately(getActivity());
+        UpcomingSyncAdapter.syncImmediately(getActivity());
     }
 
     private void openPreferredLocationInMap() {
