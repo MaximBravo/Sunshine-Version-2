@@ -17,7 +17,7 @@ import java.util.Set;
 
 /*
     Students: These are functions and some test data to make it easier to test your database and
-    Content Provider.  Note that you'll want your CalendarContract class to exactly match the one
+    Content Provider.  Note that you'll want your EventContract class to exactly match the one
     in our solution to use these as-given.
  */
 public class TestUtilities extends AndroidTestCase {
@@ -48,38 +48,38 @@ public class TestUtilities extends AndroidTestCase {
      */
     static ContentValues createWeatherValues(long locationRowId) {
         ContentValues weatherValues = new ContentValues();
-        weatherValues.put(CalendarContract.WeatherEntry.COLUMN_LOC_KEY, locationRowId);
-        weatherValues.put(CalendarContract.WeatherEntry.COLUMN_DATE, TEST_DATE);
-        weatherValues.put(CalendarContract.WeatherEntry.COLUMN_DEGREES, 1.1);
-        weatherValues.put(CalendarContract.WeatherEntry.COLUMN_HUMIDITY, 1.2);
-        weatherValues.put(CalendarContract.WeatherEntry.COLUMN_PRESSURE, 1.3);
-        weatherValues.put(CalendarContract.WeatherEntry.COLUMN_MAX_TEMP, 75);
-        weatherValues.put(CalendarContract.WeatherEntry.COLUMN_MIN_TEMP, 65);
-        weatherValues.put(CalendarContract.WeatherEntry.COLUMN_SHORT_DESC, "Asteroids");
-        weatherValues.put(CalendarContract.WeatherEntry.COLUMN_WIND_SPEED, 5.5);
-        weatherValues.put(CalendarContract.WeatherEntry.COLUMN_WEATHER_ID, 321);
+        weatherValues.put(EventContract.WeatherEntry.COLUMN_LOC_KEY, locationRowId);
+        weatherValues.put(EventContract.WeatherEntry.COLUMN_DATE, TEST_DATE);
+        weatherValues.put(EventContract.WeatherEntry.COLUMN_DEGREES, 1.1);
+        weatherValues.put(EventContract.WeatherEntry.COLUMN_HUMIDITY, 1.2);
+        weatherValues.put(EventContract.WeatherEntry.COLUMN_PRESSURE, 1.3);
+        weatherValues.put(EventContract.WeatherEntry.COLUMN_MAX_TEMP, 75);
+        weatherValues.put(EventContract.WeatherEntry.COLUMN_MIN_TEMP, 65);
+        weatherValues.put(EventContract.WeatherEntry.COLUMN_SHORT_DESC, "Asteroids");
+        weatherValues.put(EventContract.WeatherEntry.COLUMN_WIND_SPEED, 5.5);
+        weatherValues.put(EventContract.WeatherEntry.COLUMN_WEATHER_ID, 321);
 
         return weatherValues;
     }
 
     /*
         Students: You can uncomment this helper function once you have finished creating the
-        LocationEntry part of the CalendarContract.
+        LocationEntry part of the EventContract.
      */
     static ContentValues createNorthPoleLocationValues() {
         // Create a new map of values, where column names are the keys
         ContentValues testValues = new ContentValues();
-        testValues.put(CalendarContract.LocationEntry.COLUMN_LOCATION_SETTING, TEST_LOCATION);
-        testValues.put(CalendarContract.LocationEntry.COLUMN_CITY_NAME, "North Pole");
-        testValues.put(CalendarContract.LocationEntry.COLUMN_COORD_LAT, 64.7488);
-        testValues.put(CalendarContract.LocationEntry.COLUMN_COORD_LONG, -147.353);
+        testValues.put(EventContract.LocationEntry.COLUMN_LOCATION_SETTING, TEST_LOCATION);
+        testValues.put(EventContract.LocationEntry.COLUMN_CITY_NAME, "North Pole");
+        testValues.put(EventContract.LocationEntry.COLUMN_COORD_LAT, 64.7488);
+        testValues.put(EventContract.LocationEntry.COLUMN_COORD_LONG, -147.353);
 
         return testValues;
     }
 
     /*
         Students: You can uncomment this function once you have finished creating the
-        LocationEntry part of the CalendarContract as well as the CalendarDbHelper.
+        LocationEntry part of the EventContract as well as the CalendarDbHelper.
      */
     static long insertNorthPoleLocationValues(Context context) {
         // insert our test records into the database
@@ -88,7 +88,7 @@ public class TestUtilities extends AndroidTestCase {
         ContentValues testValues = TestUtilities.createNorthPoleLocationValues();
 
         long locationRowId;
-        locationRowId = db.insert(CalendarContract.LocationEntry.TABLE_NAME, null, testValues);
+        locationRowId = db.insert(EventContract.LocationEntry.TABLE_NAME, null, testValues);
 
         // Verify we got a row back.
         assertTrue("Error: Failure to insert North Pole Location Values", locationRowId != -1);

@@ -43,34 +43,34 @@ public class CalendarProvider extends ContentProvider {
         //This is an inner join which looks like
         //weather INNER JOIN location ON weather.location_id = location._id
         sWeatherByLocationSettingQueryBuilder.setTables(
-                CalendarContract.WeatherEntry.TABLE_NAME + " INNER JOIN " +
-                        CalendarContract.LocationEntry.TABLE_NAME +
-                        " ON " + CalendarContract.WeatherEntry.TABLE_NAME +
-                        "." + CalendarContract.WeatherEntry.COLUMN_LOC_KEY +
-                        " = " + CalendarContract.LocationEntry.TABLE_NAME +
-                        "." + CalendarContract.LocationEntry._ID);
+                EventContract.WeatherEntry.TABLE_NAME + " INNER JOIN " +
+                        EventContract.LocationEntry.TABLE_NAME +
+                        " ON " + EventContract.WeatherEntry.TABLE_NAME +
+                        "." + EventContract.WeatherEntry.COLUMN_LOC_KEY +
+                        " = " + EventContract.LocationEntry.TABLE_NAME +
+                        "." + EventContract.LocationEntry._ID);
     }
 
     //location.location_setting = ?
     private static final String sLocationSettingSelection =
-            CalendarContract.LocationEntry.TABLE_NAME+
-                    "." + CalendarContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? ";
+            EventContract.LocationEntry.TABLE_NAME+
+                    "." + EventContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? ";
 
     //location.location_setting = ? AND date >= ?
     private static final String sLocationSettingWithStartDateSelection =
-            CalendarContract.LocationEntry.TABLE_NAME+
-                    "." + CalendarContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
-                    CalendarContract.WeatherEntry.COLUMN_DATE + " >= ? ";
+            EventContract.LocationEntry.TABLE_NAME+
+                    "." + EventContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
+                    EventContract.WeatherEntry.COLUMN_DATE + " >= ? ";
 
     //location.location_setting = ? AND date = ?
     private static final String sLocationSettingAndDaySelection =
-            CalendarContract.LocationEntry.TABLE_NAME +
-                    "." + CalendarContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
-                    CalendarContract.WeatherEntry.COLUMN_DATE + " = ? ";
+            EventContract.LocationEntry.TABLE_NAME +
+                    "." + EventContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
+                    EventContract.WeatherEntry.COLUMN_DATE + " = ? ";
 
     private Cursor getWeatherByLocationSetting(Uri uri, String[] projection, String sortOrder) {
-        String locationSetting = CalendarContract.WeatherEntry.getLocationSettingFromUri(uri);
-        long startDate = CalendarContract.WeatherEntry.getStartDateFromUri(uri);
+        String locationSetting = EventContract.WeatherEntry.getLocationSettingFromUri(uri);
+        long startDate = EventContract.WeatherEntry.getStartDateFromUri(uri);
 
         String[] selectionArgs;
         String selection;
@@ -95,8 +95,8 @@ public class CalendarProvider extends ContentProvider {
 
     private Cursor getWeatherByLocationSettingAndDate(
             Uri uri, String[] projection, String sortOrder) {
-        String locationSetting = CalendarContract.WeatherEntry.getLocationSettingFromUri(uri);
-        long date = CalendarContract.WeatherEntry.getDateFromUri(uri);
+        String locationSetting = EventContract.WeatherEntry.getLocationSettingFromUri(uri);
+        long date = EventContract.WeatherEntry.getDateFromUri(uri);
 
         return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
@@ -122,14 +122,14 @@ public class CalendarProvider extends ContentProvider {
         // found.  The code passed into the constructor represents the code to return for the root
         // URI.  It's common to use NO_MATCH as the code for this case.
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = CalendarContract.CONTENT_AUTHORITY;
+        final String authority = EventContract.CONTENT_AUTHORITY;
 
         // For each type of URI you want to add, create a corresponding code.
-        matcher.addURI(authority, CalendarContract.PATH_WEATHER, WEATHER);
-        matcher.addURI(authority, CalendarContract.PATH_WEATHER + "/*", WEATHER_WITH_LOCATION);
-        matcher.addURI(authority, CalendarContract.PATH_WEATHER + "/*/#", WEATHER_WITH_LOCATION_AND_DATE);
+        matcher.addURI(authority, EventContract.PATH_WEATHER, WEATHER);
+        matcher.addURI(authority, EventContract.PATH_WEATHER + "/*", WEATHER_WITH_LOCATION);
+        matcher.addURI(authority, EventContract.PATH_WEATHER + "/*/#", WEATHER_WITH_LOCATION_AND_DATE);
 
-        matcher.addURI(authority, CalendarContract.PATH_LOCATION, LOCATION);
+        matcher.addURI(authority, EventContract.PATH_LOCATION, LOCATION);
         return matcher;
     }
 
@@ -157,13 +157,13 @@ public class CalendarProvider extends ContentProvider {
         switch (match) {
             // Student: Uncomment and fill out these two cases
             case WEATHER_WITH_LOCATION_AND_DATE:
-                return CalendarContract.WeatherEntry.CONTENT_ITEM_TYPE;
+                return EventContract.WeatherEntry.CONTENT_ITEM_TYPE;
             case WEATHER_WITH_LOCATION:
-                return CalendarContract.WeatherEntry.CONTENT_TYPE;
+                return EventContract.WeatherEntry.CONTENT_TYPE;
             case WEATHER:
-                return CalendarContract.WeatherEntry.CONTENT_TYPE;
+                return EventContract.WeatherEntry.CONTENT_TYPE;
             case LOCATION:
-                return CalendarContract.LocationEntry.CONTENT_TYPE;
+                return EventContract.LocationEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -190,7 +190,7 @@ public class CalendarProvider extends ContentProvider {
             // "weather"
             case WEATHER: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                        CalendarContract.WeatherEntry.TABLE_NAME,
+                        EventContract.WeatherEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -203,7 +203,7 @@ public class CalendarProvider extends ContentProvider {
             // "location"
             case LOCATION: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                        CalendarContract.LocationEntry.TABLE_NAME,
+                        EventContract.LocationEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -233,17 +233,17 @@ public class CalendarProvider extends ContentProvider {
         switch (match) {
             case WEATHER: {
                 normalizeDate(values);
-                long _id = db.insert(CalendarContract.WeatherEntry.TABLE_NAME, null, values);
+                long _id = db.insert(EventContract.WeatherEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
-                    returnUri = CalendarContract.WeatherEntry.buildWeatherUri(_id);
+                    returnUri = EventContract.WeatherEntry.buildWeatherUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
             case LOCATION: {
-                long _id = db.insert(CalendarContract.LocationEntry.TABLE_NAME, null, values);
+                long _id = db.insert(EventContract.LocationEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
-                    returnUri = CalendarContract.LocationEntry.buildLocationUri(_id);
+                    returnUri = EventContract.LocationEntry.buildLocationUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -265,11 +265,11 @@ public class CalendarProvider extends ContentProvider {
         switch (match) {
             case WEATHER:
                 rowsDeleted = db.delete(
-                        CalendarContract.WeatherEntry.TABLE_NAME, selection, selectionArgs);
+                        EventContract.WeatherEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case LOCATION:
                 rowsDeleted = db.delete(
-                        CalendarContract.LocationEntry.TABLE_NAME, selection, selectionArgs);
+                        EventContract.LocationEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -283,9 +283,9 @@ public class CalendarProvider extends ContentProvider {
 
     private void normalizeDate(ContentValues values) {
         // normalize the date value
-        if (values.containsKey(CalendarContract.WeatherEntry.COLUMN_DATE)) {
-            long dateValue = values.getAsLong(CalendarContract.WeatherEntry.COLUMN_DATE);
-            values.put(CalendarContract.WeatherEntry.COLUMN_DATE, CalendarContract.normalizeDate(dateValue));
+        if (values.containsKey(EventContract.WeatherEntry.COLUMN_DATE)) {
+            long dateValue = values.getAsLong(EventContract.WeatherEntry.COLUMN_DATE);
+            values.put(EventContract.WeatherEntry.COLUMN_DATE, EventContract.normalizeDate(dateValue));
         }
     }
 
@@ -299,11 +299,11 @@ public class CalendarProvider extends ContentProvider {
         switch (match) {
             case WEATHER:
                 normalizeDate(values);
-                rowsUpdated = db.update(CalendarContract.WeatherEntry.TABLE_NAME, values, selection,
+                rowsUpdated = db.update(EventContract.WeatherEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             case LOCATION:
-                rowsUpdated = db.update(CalendarContract.LocationEntry.TABLE_NAME, values, selection,
+                rowsUpdated = db.update(EventContract.LocationEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             default:
@@ -326,7 +326,7 @@ public class CalendarProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values) {
                         normalizeDate(value);
-                        long _id = db.insert(CalendarContract.WeatherEntry.TABLE_NAME, null, value);
+                        long _id = db.insert(EventContract.WeatherEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }
