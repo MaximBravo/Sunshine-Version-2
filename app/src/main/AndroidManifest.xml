@@ -63,7 +63,7 @@
 
         <!-- The SyncAdapter service -->
         <service
-            android:name=".sync.SunshineSyncService"
+            android:name=".sync.UpcomingSyncService"
             android:exported="true"
             >
             <intent-filter>
