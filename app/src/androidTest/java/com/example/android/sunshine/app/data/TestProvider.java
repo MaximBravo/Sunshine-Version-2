@@ -170,7 +170,7 @@ public class TestProvider extends AndroidTestCase {
      */
     public void testBasicWeatherQuery() {
         // insert our test records into the database
-        CalendarDbHelper dbHelper = new CalendarDbHelper(mContext);
+        EventDbHelper dbHelper = new EventDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues testValues = TestUtilities.createNorthPoleLocationValues();
@@ -204,7 +204,7 @@ public class TestProvider extends AndroidTestCase {
      */
     public void testBasicLocationQueries() {
         // insert our test records into the database
-        CalendarDbHelper dbHelper = new CalendarDbHelper(mContext);
+        EventDbHelper dbHelper = new EventDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues testValues = TestUtilities.createNorthPoleLocationValues();

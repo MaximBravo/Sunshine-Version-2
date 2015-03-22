@@ -28,7 +28,7 @@ public class TestDb extends AndroidTestCase {
 
     // Since we want each test to start with a clean slate
     void deleteTheDatabase() {
-        mContext.deleteDatabase(CalendarDbHelper.DATABASE_NAME);
+        mContext.deleteDatabase(EventDbHelper.DATABASE_NAME);
     }
 
     /*
@@ -56,8 +56,8 @@ public class TestDb extends AndroidTestCase {
         tableNameHashSet.add(EventContract.LocationEntry.TABLE_NAME);
         tableNameHashSet.add(EventContract.WeatherEntry.TABLE_NAME);
 
-        mContext.deleteDatabase(CalendarDbHelper.DATABASE_NAME);
-        SQLiteDatabase db = new CalendarDbHelper(
+        mContext.deleteDatabase(EventDbHelper.DATABASE_NAME);
+        SQLiteDatabase db = new EventDbHelper(
                 this.mContext).getWritableDatabase();
         assertEquals(true, db.isOpen());
 
@@ -138,7 +138,7 @@ public class TestDb extends AndroidTestCase {
         // First step: Get reference to writable database
         // If there's an error in those massive SQL table creation Strings,
         // errors will be thrown here when you try to get a writable database.
-        CalendarDbHelper dbHelper = new CalendarDbHelper(mContext);
+        EventDbHelper dbHelper = new EventDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // Second Step (Weather): Create weather values
@@ -186,7 +186,7 @@ public class TestDb extends AndroidTestCase {
         // First step: Get reference to writable database
         // If there's an error in those massive SQL table creation Strings,
         // errors will be thrown here when you try to get a writable database.
-        CalendarDbHelper dbHelper = new CalendarDbHelper(mContext);
+        EventDbHelper dbHelper = new EventDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // Second Step: Create ContentValues of what you want to insert

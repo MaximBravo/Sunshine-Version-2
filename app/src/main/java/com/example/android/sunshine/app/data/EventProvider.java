@@ -28,7 +28,7 @@ public class EventProvider extends ContentProvider {
 
     // The URI Matcher used by this content provider.
     private static final UriMatcher sUriMatcher = buildUriMatcher();
-    private CalendarDbHelper mOpenHelper;
+    private EventDbHelper mOpenHelper;
 
     static final int WEATHER = 100;
     static final int WEATHER_WITH_LOCATION = 101;
@@ -134,12 +134,12 @@ public class EventProvider extends ContentProvider {
     }
 
     /*
-        Students: We've coded this for you.  We just create a new CalendarDbHelper for later use
+        Students: We've coded this for you.  We just create a new EventDbHelper for later use
         here.
      */
     @Override
     public boolean onCreate() {
-        mOpenHelper = new CalendarDbHelper(getContext());
+        mOpenHelper = new EventDbHelper(getContext());
         return true;
     }
 
