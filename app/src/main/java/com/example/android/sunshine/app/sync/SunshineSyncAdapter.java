@@ -55,10 +55,10 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
 
     private static final String[] NOTIFY_WEATHER_PROJECTION = new String[] {
-            EventContract.WeatherEntry.COLUMN_WEATHER_ID,
-            EventContract.WeatherEntry.COLUMN_MAX_TEMP,
-            EventContract.WeatherEntry.COLUMN_MIN_TEMP,
-            EventContract.WeatherEntry.COLUMN_SHORT_DESC
+            EventContract.EventEntry.COLUMN_WEATHER_ID,
+            EventContract.EventEntry.COLUMN_MAX_TEMP,
+            EventContract.EventEntry.COLUMN_MIN_TEMP,
+            EventContract.EventEntry.COLUMN_SHORT_DESC
     };
 
     // these indices must match the projection
@@ -89,7 +89,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         int numDays = 14;
 
         try {
-            // Construct the URL for the OpenWeatherMap query
+            // Construct the URL for the OpenEventMap query
             // Possible parameters are avaiable at OWM's calendar API page, at
             // http://openweathermap.org/API#calendar
             final String CALENDAR_BASE_URL =
@@ -108,7 +108,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
             URL url = new URL(builtUri.toString());
 
-            // Create the request to OpenWeatherMap, and open the connection
+            // Create the request to OpenEventMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
@@ -135,7 +135,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 return;
             }
             calendarJsonStr = buffer.toString();
-            getWeatherDataFromJson(calendarJsonStr, locationQuery);
+            getEventDataFromJson(calendarJsonStr, locationQuery);
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the event data, there's no point in attempting
@@ -165,7 +165,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it
      * into an Object hierarchy for us.
      */
-    private void getWeatherDataFromJson(String calendarJsonStr,
+    private void getEventDataFromJson(String calendarJsonStr,
                                         String locationSetting)
             throws JSONException {
 
@@ -184,7 +184,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         final String OWM_LATITUDE = "lat";
         final String OWM_LONGITUDE = "lon";
 
-        // Weather information.  Each day's calendar info is an element of the "list" array.
+        // Event information.  Each day's calendar info is an element of the "list" array.
         final String OWM_LIST = "list";
 
         final String OWM_PRESSURE = "pressure";
@@ -274,16 +274,16 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 ContentValues eventValues = new ContentValues();
 
-                eventValues.put(EventContract.WeatherEntry.COLUMN_LOC_KEY, locationId);
-                eventValues.put(EventContract.WeatherEntry.COLUMN_DATE, dateTime);
-                eventValues.put(EventContract.WeatherEntry.COLUMN_HUMIDITY, humidity);
-                eventValues.put(EventContract.WeatherEntry.COLUMN_PRESSURE, pressure);
-                eventValues.put(EventContract.WeatherEntry.COLUMN_WIND_SPEED, windSpeed);
-                eventValues.put(EventContract.WeatherEntry.COLUMN_DEGREES, windDirection);
-                eventValues.put(EventContract.WeatherEntry.COLUMN_MAX_TEMP, high);
-                eventValues.put(EventContract.WeatherEntry.COLUMN_MIN_TEMP, low);
-                eventValues.put(EventContract.WeatherEntry.COLUMN_SHORT_DESC, description);
-                eventValues.put(EventContract.WeatherEntry.COLUMN_WEATHER_ID, eventId);
+                eventValues.put(EventContract.EventEntry.COLUMN_LOC_KEY, locationId);
+                eventValues.put(EventContract.EventEntry.COLUMN_DATE, dateTime);
+                eventValues.put(EventContract.EventEntry.COLUMN_HUMIDITY, humidity);
+                eventValues.put(EventContract.EventEntry.COLUMN_PRESSURE, pressure);
+                eventValues.put(EventContract.EventEntry.COLUMN_WIND_SPEED, windSpeed);
+                eventValues.put(EventContract.EventEntry.COLUMN_DEGREES, windDirection);
+                eventValues.put(EventContract.EventEntry.COLUMN_MAX_TEMP, high);
+                eventValues.put(EventContract.EventEntry.COLUMN_MIN_TEMP, low);
+                eventValues.put(EventContract.EventEntry.COLUMN_SHORT_DESC, description);
+                eventValues.put(EventContract.EventEntry.COLUMN_WEATHER_ID, eventId);
 
                 cVVector.add(eventValues);
             }
@@ -293,14 +293,14 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             if ( cVVector.size() > 0 ) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
-                getContext().getContentResolver().bulkInsert(EventContract.WeatherEntry.CONTENT_URI, cvArray);
+                getContext().getContentResolver().bulkInsert(EventContract.EventEntry.CONTENT_URI, cvArray);
 
                 // delete old data so we don't build up an endless history
-                getContext().getContentResolver().delete(EventContract.WeatherEntry.CONTENT_URI,
-                        EventContract.WeatherEntry.COLUMN_DATE + " <= ?",
+                getContext().getContentResolver().delete(EventContract.EventEntry.CONTENT_URI,
+                        EventContract.EventEntry.COLUMN_DATE + " <= ?",
                         new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
 
-                notifyWeather();
+                notifyEvent();
             }
 
             Log.d(LOG_TAG, "Sync Complete. " + cVVector.size() + " Inserted");
@@ -311,7 +311,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
-    private void notifyWeather() {
+    private void notifyEvent() {
         Context context = getContext();
         //checking the last update and notify if it' the first of the day
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -328,7 +328,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 // Last sync was more than 1 day ago, let's send a notification with the event.
                 String locationQuery = Utility.getPreferredLocation(context);
 
-                Uri eventUri = EventContract.WeatherEntry.buildWeatherLocationWithDate(locationQuery, System.currentTimeMillis());
+                Uri eventUri = EventContract.EventEntry.buildEventLocationWithDate(locationQuery, System.currentTimeMillis());
 
                 // we'll query our contentProvider, as always
                 Cursor cursor = context.getContentResolver().query(eventUri, NOTIFY_WEATHER_PROJECTION, null, null, null);
@@ -339,10 +339,10 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                     double low = cursor.getDouble(INDEX_MIN_TEMP);
                     String desc = cursor.getString(INDEX_SHORT_DESC);
 
-                    int iconId = Utility.getIconResourceForWeatherCondition(eventId);
+                    int iconId = Utility.getIconResourceForEventCondition(eventId);
                     Resources resources = context.getResources();
                     Bitmap largeIcon = BitmapFactory.decodeResource(resources,
-                            Utility.getArtResourceForWeatherCondition(eventId));
+                            Utility.getArtResourceForEventCondition(eventId));
                     String title = context.getString(R.string.app_name);
 
                     // Define the text of the calendar.

@@ -35,7 +35,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.sunshine.app.data.EventContract;
-import com.example.android.sunshine.app.data.EventContract.WeatherEntry;
+import com.example.android.sunshine.app.data.EventContract.EventEntry;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -54,16 +54,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final int DETAIL_LOADER = 0;
 
     private static final String[] DETAIL_COLUMNS = {
-            WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
-            WeatherEntry.COLUMN_DATE,
-            WeatherEntry.COLUMN_SHORT_DESC,
-            WeatherEntry.COLUMN_MAX_TEMP,
-            WeatherEntry.COLUMN_MIN_TEMP,
-            WeatherEntry.COLUMN_HUMIDITY,
-            WeatherEntry.COLUMN_PRESSURE,
-            WeatherEntry.COLUMN_WIND_SPEED,
-            WeatherEntry.COLUMN_DEGREES,
-            WeatherEntry.COLUMN_WEATHER_ID,
+            EventEntry.TABLE_NAME + "." + EventEntry._ID,
+            EventEntry.COLUMN_DATE,
+            EventEntry.COLUMN_SHORT_DESC,
+            EventEntry.COLUMN_MAX_TEMP,
+            EventEntry.COLUMN_MIN_TEMP,
+            EventEntry.COLUMN_HUMIDITY,
+            EventEntry.COLUMN_PRESSURE,
+            EventEntry.COLUMN_WIND_SPEED,
+            EventEntry.COLUMN_DEGREES,
+            EventEntry.COLUMN_WEATHER_ID,
             // This works because the EventProvider returns location data joined with
             // event data, even though they're stored in two different tables.
             EventContract.LocationEntry.COLUMN_LOCATION_SETTING
@@ -153,8 +153,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // replace the uri, since the location has changed
         Uri uri = mUri;
         if (null != uri) {
-            long date = EventContract.WeatherEntry.getDateFromUri(uri);
-            Uri updatedUri = EventContract.WeatherEntry.buildWeatherLocationWithDate(newLocation, date);
+            long date = EventContract.EventEntry.getDateFromUri(uri);
+            Uri updatedUri = EventContract.EventEntry.buildEventLocationWithDate(newLocation, date);
             mUri = updatedUri;
             getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
         }
@@ -184,7 +184,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             int eventId = data.getInt(COL_WEATHER_CONDITION_ID);
 
             // Use event art image
-            mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(eventId));
+            mIconView.setImageResource(Utility.getArtResourceForEventCondition(eventId));
 
             // Read date from cursor and update views for day of week and date
             long date = data.getLong(COL_WEATHER_DATE);

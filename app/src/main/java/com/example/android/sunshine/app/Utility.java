@@ -179,13 +179,13 @@ public class Utility {
 
     /**
      * Helper method to provide the icon resource id according to the event condition id returned
-     * by the OpenWeatherMap call.
-     * @param eventId from OpenWeatherMap API response
+     * by the OpenEventMap call.
+     * @param eventId from OpenEventMap API response
      * @return resource id for the corresponding icon. -1 if no relation is found.
      */
-    public static int getIconResourceForWeatherCondition(int eventId) {
+    public static int getIconResourceForEventCondition(int eventId) {
         // Based on event code data found at:
-        // http://bugs.openeventmap.org/projects/api/wiki/Weather_Condition_Codes
+        // http://bugs.openeventmap.org/projects/api/wiki/Event_Condition_Codes
         if (eventId >= 200 && eventId <= 232) {
             return R.drawable.ic_storm;
         } else if (eventId >= 300 && eventId <= 321) {
@@ -214,13 +214,13 @@ public class Utility {
 
     /**
      * Helper method to provide the art resource id according to the event condition id returned
-     * by the OpenWeatherMap call.
-     * @param eventId from OpenWeatherMap API response
+     * by the OpenEventMap call.
+     * @param eventId from OpenEventMap API response
      * @return resource id for the corresponding icon. -1 if no relation is found.
      */
-    public static int getArtResourceForWeatherCondition(int eventId) {
+    public static int getArtResourceForEventCondition(int eventId) {
         // Based on event code data found at:
-        // http://bugs.openeventmap.org/projects/api/wiki/Weather_Condition_Codes
+        // http://bugs.openeventmap.org/projects/api/wiki/Event_Condition_Codes
         if (eventId >= 200 && eventId <= 232) {
             return R.drawable.art_storm;
         } else if (eventId >= 300 && eventId <= 321) {

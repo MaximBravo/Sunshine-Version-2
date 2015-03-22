@@ -59,13 +59,13 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
             // On the one hand, that's annoying.  On the other, you can search the event table
             // using the location set by the user, which is only in the Location table.
             // So the convenience is worth it.
-            EventContract.WeatherEntry.TABLE_NAME + "." + EventContract.WeatherEntry._ID,
-            EventContract.WeatherEntry.COLUMN_DATE,
-            EventContract.WeatherEntry.COLUMN_SHORT_DESC,
-            EventContract.WeatherEntry.COLUMN_MAX_TEMP,
-            EventContract.WeatherEntry.COLUMN_MIN_TEMP,
+            EventContract.EventEntry.TABLE_NAME + "." + EventContract.EventEntry._ID,
+            EventContract.EventEntry.COLUMN_DATE,
+            EventContract.EventEntry.COLUMN_SHORT_DESC,
+            EventContract.EventEntry.COLUMN_MAX_TEMP,
+            EventContract.EventEntry.COLUMN_MIN_TEMP,
             EventContract.LocationEntry.COLUMN_LOCATION_SETTING,
-            EventContract.WeatherEntry.COLUMN_WEATHER_ID,
+            EventContract.EventEntry.COLUMN_WEATHER_ID,
             EventContract.LocationEntry.COLUMN_COORD_LAT,
             EventContract.LocationEntry.COLUMN_COORD_LONG
     };
@@ -116,7 +116,7 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 //        if (id == R.id.action_refresh) {
-//            updateWeather();
+//            updateEvent();
 //            return true;
 //        }
         if (id == R.id.action_map) {
@@ -151,7 +151,7 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
                 if (cursor != null) {
                     String locationSetting = Utility.getPreferredLocation(getActivity());
                     ((Callback) getActivity())
-                            .onItemSelected(EventContract.WeatherEntry.buildWeatherLocationWithDate(
+                            .onItemSelected(EventContract.EventEntry.buildEventLocationWithDate(
                                     locationSetting, cursor.getLong(COL_WEATHER_DATE)
                             ));
                 }
@@ -183,11 +183,11 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
 
     // since we read the location when we create the loader, all we need to do is restart things
     void onLocationChanged( ) {
-        updateWeather();
+        updateEvent();
         getLoaderManager().restartLoader(CALENDAR_LOADER, null, this);
     }
 
-    private void updateWeather() {
+    private void updateEvent() {
         SunshineSyncAdapter.syncImmediately(getActivity());
     }
 
@@ -236,10 +236,10 @@ public class CalendarFragment extends Fragment implements LoaderManager.LoaderCa
         // dates after or including today.
 
         // Sort order:  Ascending, by date.
-        String sortOrder = EventContract.WeatherEntry.COLUMN_DATE + " ASC";
+        String sortOrder = EventContract.EventEntry.COLUMN_DATE + " ASC";
 
         String locationSetting = Utility.getPreferredLocation(getActivity());
-        Uri eventForLocationUri = EventContract.WeatherEntry.buildWeatherLocationWithStartDate(
+        Uri eventForLocationUri = EventContract.EventEntry.buildEventLocationWithStartDate(
                 locationSetting, System.currentTimeMillis());
 
         return new CursorLoader(getActivity(),

@@ -78,13 +78,13 @@ public class CalendarAdapter extends CursorAdapter {
         switch (viewType) {
             case VIEW_TYPE_TODAY: {
                 // Get event icon
-                viewHolder.iconView.setImageResource(Utility.getArtResourceForWeatherCondition(
+                viewHolder.iconView.setImageResource(Utility.getArtResourceForEventCondition(
                         cursor.getInt(CalendarFragment.COL_WEATHER_CONDITION_ID)));
                 break;
             }
             case VIEW_TYPE_FUTURE_DAY: {
                 // Get event icon
-                viewHolder.iconView.setImageResource(Utility.getIconResourceForWeatherCondition(
+                viewHolder.iconView.setImageResource(Utility.getIconResourceForEventCondition(
                         cursor.getInt(CalendarFragment.COL_WEATHER_CONDITION_ID)));
                 break;
             }

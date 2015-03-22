@@ -20,7 +20,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.android.sunshine.app.data.EventContract.LocationEntry;
-import com.example.android.sunshine.app.data.EventContract.WeatherEntry;
+import com.example.android.sunshine.app.data.EventContract.EventEntry;
 
 /**
  * Manages a local database for event data.
@@ -48,36 +48,36 @@ public class EventDbHelper extends SQLiteOpenHelper {
                 LocationEntry.COLUMN_COORD_LONG + " REAL NOT NULL " +
                 " );";
 
-        final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + WeatherEntry.TABLE_NAME + " (" +
+        final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + EventEntry.TABLE_NAME + " (" +
                 // Why AutoIncrement here, and not above?
                 // Unique keys will be auto-generated in either case.  But for event
                 // calendaring, it's reasonable to assume the user will want information
                 // for a certain date and all dates *following*, so the calendar data
                 // should be sorted accordingly.
-                WeatherEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                EventEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
                 // the ID of the location entry associated with this event data
-                WeatherEntry.COLUMN_LOC_KEY + " INTEGER NOT NULL, " +
-                WeatherEntry.COLUMN_DATE + " INTEGER NOT NULL, " +
-                WeatherEntry.COLUMN_SHORT_DESC + " TEXT NOT NULL, " +
-                WeatherEntry.COLUMN_WEATHER_ID + " INTEGER NOT NULL," +
+                EventEntry.COLUMN_LOC_KEY + " INTEGER NOT NULL, " +
+                EventEntry.COLUMN_DATE + " INTEGER NOT NULL, " +
+                EventEntry.COLUMN_SHORT_DESC + " TEXT NOT NULL, " +
+                EventEntry.COLUMN_WEATHER_ID + " INTEGER NOT NULL," +
 
-                WeatherEntry.COLUMN_MIN_TEMP + " REAL NOT NULL, " +
-                WeatherEntry.COLUMN_MAX_TEMP + " REAL NOT NULL, " +
+                EventEntry.COLUMN_MIN_TEMP + " REAL NOT NULL, " +
+                EventEntry.COLUMN_MAX_TEMP + " REAL NOT NULL, " +
 
-                WeatherEntry.COLUMN_HUMIDITY + " REAL NOT NULL, " +
-                WeatherEntry.COLUMN_PRESSURE + " REAL NOT NULL, " +
-                WeatherEntry.COLUMN_WIND_SPEED + " REAL NOT NULL, " +
-                WeatherEntry.COLUMN_DEGREES + " REAL NOT NULL, " +
+                EventEntry.COLUMN_HUMIDITY + " REAL NOT NULL, " +
+                EventEntry.COLUMN_PRESSURE + " REAL NOT NULL, " +
+                EventEntry.COLUMN_WIND_SPEED + " REAL NOT NULL, " +
+                EventEntry.COLUMN_DEGREES + " REAL NOT NULL, " +
 
                 // Set up the location column as a foreign key to location table.
-                " FOREIGN KEY (" + WeatherEntry.COLUMN_LOC_KEY + ") REFERENCES " +
+                " FOREIGN KEY (" + EventEntry.COLUMN_LOC_KEY + ") REFERENCES " +
                 LocationEntry.TABLE_NAME + " (" + LocationEntry._ID + "), " +
 
                 // To assure the application have just one event entry per day
                 // per location, it's created a UNIQUE constraint with REPLACE strategy
-                " UNIQUE (" + WeatherEntry.COLUMN_DATE + ", " +
-                WeatherEntry.COLUMN_LOC_KEY + ") ON CONFLICT REPLACE);";
+                " UNIQUE (" + EventEntry.COLUMN_DATE + ", " +
+                EventEntry.COLUMN_LOC_KEY + ") ON CONFLICT REPLACE);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_LOCATION_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
@@ -92,7 +92,7 @@ public class EventDbHelper extends SQLiteOpenHelper {
         // If you want to update the schema without wiping data, commenting out the next 2 lines
         // should be your top priority before modifying this method.
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + LocationEntry.TABLE_NAME);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WeatherEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + EventEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

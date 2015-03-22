@@ -31,9 +31,9 @@ public class TestUriMatcher extends AndroidTestCase {
     private static final long TEST_LOCATION_ID = 10L;
 
     // content://com.example.android.sunshine.app/event"
-    private static final Uri TEST_WEATHER_DIR = EventContract.WeatherEntry.CONTENT_URI;
-    private static final Uri TEST_WEATHER_WITH_LOCATION_DIR = EventContract.WeatherEntry.buildWeatherLocation(LOCATION_QUERY);
-    private static final Uri TEST_WEATHER_WITH_LOCATION_AND_DATE_DIR = EventContract.WeatherEntry.buildWeatherLocationWithDate(LOCATION_QUERY, TEST_DATE);
+    private static final Uri TEST_WEATHER_DIR = EventContract.EventEntry.CONTENT_URI;
+    private static final Uri TEST_WEATHER_WITH_LOCATION_DIR = EventContract.EventEntry.buildEventLocation(LOCATION_QUERY);
+    private static final Uri TEST_WEATHER_WITH_LOCATION_AND_DATE_DIR = EventContract.EventEntry.buildEventLocationWithDate(LOCATION_QUERY, TEST_DATE);
     // content://com.example.android.sunshine.app/location"
     private static final Uri TEST_LOCATION_DIR = EventContract.LocationEntry.CONTENT_URI;
 

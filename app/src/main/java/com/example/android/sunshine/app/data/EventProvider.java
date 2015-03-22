@@ -35,18 +35,18 @@ public class EventProvider extends ContentProvider {
     static final int WEATHER_WITH_LOCATION_AND_DATE = 102;
     static final int LOCATION = 300;
 
-    private static final SQLiteQueryBuilder sWeatherByLocationSettingQueryBuilder;
+    private static final SQLiteQueryBuilder sEventByLocationSettingQueryBuilder;
 
     static{
-        sWeatherByLocationSettingQueryBuilder = new SQLiteQueryBuilder();
+        sEventByLocationSettingQueryBuilder = new SQLiteQueryBuilder();
         
         //This is an inner join which looks like
         //event INNER JOIN location ON event.location_id = location._id
-        sWeatherByLocationSettingQueryBuilder.setTables(
-                EventContract.WeatherEntry.TABLE_NAME + " INNER JOIN " +
+        sEventByLocationSettingQueryBuilder.setTables(
+                EventContract.EventEntry.TABLE_NAME + " INNER JOIN " +
                         EventContract.LocationEntry.TABLE_NAME +
-                        " ON " + EventContract.WeatherEntry.TABLE_NAME +
-                        "." + EventContract.WeatherEntry.COLUMN_LOC_KEY +
+                        " ON " + EventContract.EventEntry.TABLE_NAME +
+                        "." + EventContract.EventEntry.COLUMN_LOC_KEY +
                         " = " + EventContract.LocationEntry.TABLE_NAME +
                         "." + EventContract.LocationEntry._ID);
     }
@@ -60,17 +60,17 @@ public class EventProvider extends ContentProvider {
     private static final String sLocationSettingWithStartDateSelection =
             EventContract.LocationEntry.TABLE_NAME+
                     "." + EventContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
-                    EventContract.WeatherEntry.COLUMN_DATE + " >= ? ";
+                    EventContract.EventEntry.COLUMN_DATE + " >= ? ";
 
     //location.location_setting = ? AND date = ?
     private static final String sLocationSettingAndDaySelection =
             EventContract.LocationEntry.TABLE_NAME +
                     "." + EventContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
-                    EventContract.WeatherEntry.COLUMN_DATE + " = ? ";
+                    EventContract.EventEntry.COLUMN_DATE + " = ? ";
 
-    private Cursor getWeatherByLocationSetting(Uri uri, String[] projection, String sortOrder) {
-        String locationSetting = EventContract.WeatherEntry.getLocationSettingFromUri(uri);
-        long startDate = EventContract.WeatherEntry.getStartDateFromUri(uri);
+    private Cursor getEventByLocationSetting(Uri uri, String[] projection, String sortOrder) {
+        String locationSetting = EventContract.EventEntry.getLocationSettingFromUri(uri);
+        long startDate = EventContract.EventEntry.getStartDateFromUri(uri);
 
         String[] selectionArgs;
         String selection;
@@ -83,7 +83,7 @@ public class EventProvider extends ContentProvider {
             selection = sLocationSettingWithStartDateSelection;
         }
 
-        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+        return sEventByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
                 selection,
                 selectionArgs,
@@ -93,12 +93,12 @@ public class EventProvider extends ContentProvider {
         );
     }
 
-    private Cursor getWeatherByLocationSettingAndDate(
+    private Cursor getEventByLocationSettingAndDate(
             Uri uri, String[] projection, String sortOrder) {
-        String locationSetting = EventContract.WeatherEntry.getLocationSettingFromUri(uri);
-        long date = EventContract.WeatherEntry.getDateFromUri(uri);
+        String locationSetting = EventContract.EventEntry.getLocationSettingFromUri(uri);
+        long date = EventContract.EventEntry.getDateFromUri(uri);
 
-        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+        return sEventByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
                 sLocationSettingAndDaySelection,
                 new String[]{locationSetting, Long.toString(date)},
@@ -157,11 +157,11 @@ public class EventProvider extends ContentProvider {
         switch (match) {
             // Student: Uncomment and fill out these two cases
             case WEATHER_WITH_LOCATION_AND_DATE:
-                return EventContract.WeatherEntry.CONTENT_ITEM_TYPE;
+                return EventContract.EventEntry.CONTENT_ITEM_TYPE;
             case WEATHER_WITH_LOCATION:
-                return EventContract.WeatherEntry.CONTENT_TYPE;
+                return EventContract.EventEntry.CONTENT_TYPE;
             case WEATHER:
-                return EventContract.WeatherEntry.CONTENT_TYPE;
+                return EventContract.EventEntry.CONTENT_TYPE;
             case LOCATION:
                 return EventContract.LocationEntry.CONTENT_TYPE;
             default:
@@ -179,18 +179,18 @@ public class EventProvider extends ContentProvider {
             // "event/*/*"
             case WEATHER_WITH_LOCATION_AND_DATE:
             {
-                retCursor = getWeatherByLocationSettingAndDate(uri, projection, sortOrder);
+                retCursor = getEventByLocationSettingAndDate(uri, projection, sortOrder);
                 break;
             }
             // "event/*"
             case WEATHER_WITH_LOCATION: {
-                retCursor = getWeatherByLocationSetting(uri, projection, sortOrder);
+                retCursor = getEventByLocationSetting(uri, projection, sortOrder);
                 break;
             }
             // "event"
             case WEATHER: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                        EventContract.WeatherEntry.TABLE_NAME,
+                        EventContract.EventEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -233,9 +233,9 @@ public class EventProvider extends ContentProvider {
         switch (match) {
             case WEATHER: {
                 normalizeDate(values);
-                long _id = db.insert(EventContract.WeatherEntry.TABLE_NAME, null, values);
+                long _id = db.insert(EventContract.EventEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
-                    returnUri = EventContract.WeatherEntry.buildWeatherUri(_id);
+                    returnUri = EventContract.EventEntry.buildEventUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -265,7 +265,7 @@ public class EventProvider extends ContentProvider {
         switch (match) {
             case WEATHER:
                 rowsDeleted = db.delete(
-                        EventContract.WeatherEntry.TABLE_NAME, selection, selectionArgs);
+                        EventContract.EventEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case LOCATION:
                 rowsDeleted = db.delete(
@@ -283,9 +283,9 @@ public class EventProvider extends ContentProvider {
 
     private void normalizeDate(ContentValues values) {
         // normalize the date value
-        if (values.containsKey(EventContract.WeatherEntry.COLUMN_DATE)) {
-            long dateValue = values.getAsLong(EventContract.WeatherEntry.COLUMN_DATE);
-            values.put(EventContract.WeatherEntry.COLUMN_DATE, EventContract.normalizeDate(dateValue));
+        if (values.containsKey(EventContract.EventEntry.COLUMN_DATE)) {
+            long dateValue = values.getAsLong(EventContract.EventEntry.COLUMN_DATE);
+            values.put(EventContract.EventEntry.COLUMN_DATE, EventContract.normalizeDate(dateValue));
         }
     }
 
@@ -299,7 +299,7 @@ public class EventProvider extends ContentProvider {
         switch (match) {
             case WEATHER:
                 normalizeDate(values);
-                rowsUpdated = db.update(EventContract.WeatherEntry.TABLE_NAME, values, selection,
+                rowsUpdated = db.update(EventContract.EventEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             case LOCATION:
@@ -326,7 +326,7 @@ public class EventProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values) {
                         normalizeDate(value);
-                        long _id = db.insert(EventContract.WeatherEntry.TABLE_NAME, null, value);
+                        long _id = db.insert(EventContract.EventEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }

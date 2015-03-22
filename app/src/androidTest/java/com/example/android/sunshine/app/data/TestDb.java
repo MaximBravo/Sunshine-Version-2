@@ -54,7 +54,7 @@ public class TestDb extends AndroidTestCase {
         // Android metadata (db version information)
         final HashSet<String> tableNameHashSet = new HashSet<String>();
         tableNameHashSet.add(EventContract.LocationEntry.TABLE_NAME);
-        tableNameHashSet.add(EventContract.WeatherEntry.TABLE_NAME);
+        tableNameHashSet.add(EventContract.EventEntry.TABLE_NAME);
 
         mContext.deleteDatabase(EventDbHelper.DATABASE_NAME);
         SQLiteDatabase db = new EventDbHelper(
@@ -118,10 +118,10 @@ public class TestDb extends AndroidTestCase {
     /*
         Students:  Here is where you will build code to test that we can insert and query the
         database.  We've done a lot of work for you.  You'll want to look in TestUtilities
-        where you can use the "createWeatherValues" function.  You can
+        where you can use the "createEventValues" function.  You can
         also make use of the validateCurrentRecord function from within TestUtilities.
      */
-    public void testWeatherTable() {
+    public void testEventTable() {
         // First insert the location, and then use the locationRowId to insert
         // the event. Make sure to cover as many failure cases as you can.
 
@@ -141,17 +141,17 @@ public class TestDb extends AndroidTestCase {
         EventDbHelper dbHelper = new EventDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        // Second Step (Weather): Create event values
-        ContentValues eventValues = TestUtilities.createWeatherValues(locationRowId);
+        // Second Step (Event): Create event values
+        ContentValues eventValues = TestUtilities.createEventValues(locationRowId);
 
-        // Third Step (Weather): Insert ContentValues into database and get a row ID back
-        long eventRowId = db.insert(EventContract.WeatherEntry.TABLE_NAME, null, eventValues);
+        // Third Step (Event): Insert ContentValues into database and get a row ID back
+        long eventRowId = db.insert(EventContract.EventEntry.TABLE_NAME, null, eventValues);
         assertTrue(eventRowId != -1);
 
         // Fourth Step: Query the database and receive a Cursor back
         // A cursor is your primary interface to the query results.
         Cursor eventCursor = db.query(
-                EventContract.WeatherEntry.TABLE_NAME,  // Table to Query
+                EventContract.EventEntry.TABLE_NAME,  // Table to Query
                 null, // leaving "columns" null just returns all the columns.
                 null, // cols for "where" clause
                 null, // values for "where" clause
@@ -178,9 +178,9 @@ public class TestDb extends AndroidTestCase {
 
 
     /*
-        Students: This is a helper method for the testWeatherTable quiz. You can move your
+        Students: This is a helper method for the testEventTable quiz. You can move your
         code from testLocationTable to here so that you can call this code from both
-        testWeatherTable and testLocationTable.
+        testEventTable and testLocationTable.
      */
     public long insertLocation() {
         // First step: Get reference to writable database

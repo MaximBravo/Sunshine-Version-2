@@ -87,7 +87,7 @@ public class EventContract {
     }
 
     /* Inner class that defines the table contents of the event table */
-    public static final class WeatherEntry implements BaseColumns {
+    public static final class EventEntry implements BaseColumns {
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_WEATHER).build();
@@ -103,7 +103,7 @@ public class EventContract {
         public static final String COLUMN_LOC_KEY = "location_id";
         // Date, stored as long in milliseconds since the epoch
         public static final String COLUMN_DATE = "date";
-        // Weather id as returned by API, to identify the icon to be used
+        // Event id as returned by API, to identify the icon to be used
         public static final String COLUMN_WEATHER_ID = "event_id";
 
         // Short description and long description of the event, as provided by API.
@@ -126,25 +126,25 @@ public class EventContract {
         // Degrees are meteorological degrees (e.g, 0 is north, 180 is south).  Stored as floats.
         public static final String COLUMN_DEGREES = "degrees";
 
-        public static Uri buildWeatherUri(long id) {
+        public static Uri buildEventUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
         /*
-            Student: This is the buildWeatherLocation function you filled in.
+            Student: This is the buildEventLocation function you filled in.
          */
-        public static Uri buildWeatherLocation(String locationSetting) {
+        public static Uri buildEventLocation(String locationSetting) {
             return CONTENT_URI.buildUpon().appendPath(locationSetting).build();
         }
 
-        public static Uri buildWeatherLocationWithStartDate(
+        public static Uri buildEventLocationWithStartDate(
                 String locationSetting, long startDate) {
             long normalizedDate = normalizeDate(startDate);
             return CONTENT_URI.buildUpon().appendPath(locationSetting)
                     .appendQueryParameter(COLUMN_DATE, Long.toString(normalizedDate)).build();
         }
 
-        public static Uri buildWeatherLocationWithDate(String locationSetting, long date) {
+        public static Uri buildEventLocationWithDate(String locationSetting, long date) {
             return CONTENT_URI.buildUpon().appendPath(locationSetting)
                     .appendPath(Long.toString(normalizeDate(date))).build();
         }

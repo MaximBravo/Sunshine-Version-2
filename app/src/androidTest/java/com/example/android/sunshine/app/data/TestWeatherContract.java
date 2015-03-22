@@ -22,7 +22,7 @@ import android.test.AndroidTestCase;
     Students: This is NOT a complete test for the EventContract --- just for the functions
     that we expect you to write.
  */
-public class TestWeatherContract extends AndroidTestCase {
+public class TestEventContract extends AndroidTestCase {
 
     // intentionally includes a slash to make sure Uri is getting quoted correctly
     private static final String TEST_WEATHER_LOCATION = "/North Pole";
@@ -31,14 +31,14 @@ public class TestWeatherContract extends AndroidTestCase {
     /*
         Students: Uncomment this out to test your event location function.
      */
-    public void testBuildWeatherLocation() {
-        Uri locationUri = EventContract.WeatherEntry.buildWeatherLocation(TEST_WEATHER_LOCATION);
-        assertNotNull("Error: Null Uri returned.  You must fill-in buildWeatherLocation in " +
+    public void testBuildEventLocation() {
+        Uri locationUri = EventContract.EventEntry.buildEventLocation(TEST_WEATHER_LOCATION);
+        assertNotNull("Error: Null Uri returned.  You must fill-in buildEventLocation in " +
                         "EventContract.",
                 locationUri);
-        assertEquals("Error: Weather location not properly appended to the end of the Uri",
+        assertEquals("Error: Event location not properly appended to the end of the Uri",
                 TEST_WEATHER_LOCATION, locationUri.getLastPathSegment());
-        assertEquals("Error: Weather location Uri doesn't match our expected result",
+        assertEquals("Error: Event location Uri doesn't match our expected result",
                 locationUri.toString(),
                 "content://com.example.android.sunshine.app/event/%2FNorth%20Pole");
     }
