@@ -41,7 +41,7 @@ import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
  */
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String LOG_TAG = ForecastFragment.class.getSimpleName();
-    private ForecastAdapter mForecastAdapter;
+    private CalendarAdapter mCalendarAdapter;
 
     private ListView mListView;
     private int mPosition = ListView.INVALID_POSITION;
@@ -131,15 +131,15 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // The ForecastAdapter will take data from a source and
+        // The CalendarAdapter will take data from a source and
         // use it to populate the ListView it's attached to.
-        mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
+        mCalendarAdapter = new CalendarAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
         mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
-        mListView.setAdapter(mForecastAdapter);
+        mListView.setAdapter(mCalendarAdapter);
         // We'll call our MainActivity
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -170,7 +170,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             mPosition = savedInstanceState.getInt(SELECTED_KEY);
         }
 
-        mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
+        mCalendarAdapter.setUseTodayLayout(mUseTodayLayout);
 
         return rootView;
     }
@@ -195,8 +195,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         // Using the URI scheme for showing a location found on a map.  This super-handy
         // intent can is detailed in the "Common Intents" page of Android's developer site:
         // http://developer.android.com/guide/components/intents-common.html#Maps
-        if ( null != mForecastAdapter ) {
-            Cursor c = mForecastAdapter.getCursor();
+        if ( null != mCalendarAdapter) {
+            Cursor c = mCalendarAdapter.getCursor();
             if ( null != c ) {
                 c.moveToPosition(0);
                 String posLat = c.getString(COL_COORD_LAT);
@@ -252,7 +252,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mForecastAdapter.swapCursor(data);
+        mCalendarAdapter.swapCursor(data);
         if (mPosition != ListView.INVALID_POSITION) {
             // If we don't need to restart the loader, and there's a desired position to restore
             // to, do so now.
@@ -262,13 +262,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mForecastAdapter.swapCursor(null);
+        mCalendarAdapter.swapCursor(null);
     }
 
     public void setUseTodayLayout(boolean useTodayLayout) {
         mUseTodayLayout = useTodayLayout;
-        if (mForecastAdapter != null) {
-            mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
+        if (mCalendarAdapter != null) {
+            mCalendarAdapter.setUseTodayLayout(mUseTodayLayout);
         }
     }
 }

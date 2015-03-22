@@ -10,10 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * {@link ForecastAdapter} exposes a list of weather forecasts
+ * {@link CalendarAdapter} exposes a list of weather forecasts
  * from a {@link Cursor} to a {@link android.widget.ListView}.
  */
-public class ForecastAdapter extends CursorAdapter {
+public class CalendarAdapter extends CursorAdapter {
 
     private static final int VIEW_TYPE_COUNT = 2;
     private static final int VIEW_TYPE_TODAY = 0;
@@ -41,7 +41,7 @@ public class ForecastAdapter extends CursorAdapter {
         }
     }
 
-    public ForecastAdapter(Context context, Cursor c, int flags) {
+    public CalendarAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
