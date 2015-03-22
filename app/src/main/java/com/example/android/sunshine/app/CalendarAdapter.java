@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * {@link CalendarAdapter} exposes a list of weather calendars
+ * {@link CalendarAdapter} exposes a list of calendars
  * from a {@link Cursor} to a {@link android.widget.ListView}.
  */
 public class CalendarAdapter extends CursorAdapter {
@@ -95,9 +95,9 @@ public class CalendarAdapter extends CursorAdapter {
         // Find TextView and set formatted date on it
         viewHolder.dateView.setText(Utility.getFriendlyDayString(context, dateInMillis));
 
-        // Read weather calendar from cursor
+        // Read calendar from cursor
         String description = cursor.getString(CalendarFragment.COL_WEATHER_DESC);
-        // Find TextView and set weather calendar on it
+        // Find TextView and set calendar on it
         viewHolder.descriptionView.setText(description);
 
         // For accessibility, add a content description to the icon field
