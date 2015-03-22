@@ -25,14 +25,14 @@ import com.example.android.sunshine.app.data.CalendarContract.WeatherEntry;
 /**
  * Manages a local database for weather data.
  */
-public class WeatherDbHelper extends SQLiteOpenHelper {
+public class CalendarDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
     private static final int DATABASE_VERSION = 2;
 
     static final String DATABASE_NAME = "weather.db";
 
-    public WeatherDbHelper(Context context) {
+    public CalendarDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

@@ -79,11 +79,11 @@ public class TestUtilities extends AndroidTestCase {
 
     /*
         Students: You can uncomment this function once you have finished creating the
-        LocationEntry part of the CalendarContract as well as the WeatherDbHelper.
+        LocationEntry part of the CalendarContract as well as the CalendarDbHelper.
      */
     static long insertNorthPoleLocationValues(Context context) {
         // insert our test records into the database
-        WeatherDbHelper dbHelper = new WeatherDbHelper(context);
+        CalendarDbHelper dbHelper = new CalendarDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues testValues = TestUtilities.createNorthPoleLocationValues();
 
