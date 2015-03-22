@@ -31,7 +31,7 @@ import com.maximbravo.upcoming.app.data.EventContract.LocationEntry;
 import com.maximbravo.upcoming.app.data.EventContract.EventEntry;
 
 /*
-    Note: This is not a complete set of tests of the Sunshine ContentProvider, but it does test
+    Note: This is not a complete set of tests of the Upcoming ContentProvider, but it does test
     that at least the basic functionality has been implemented correctly.
 
     Students: Uncomment the tests in this class as you implement the functionality in your
