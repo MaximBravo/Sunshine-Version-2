@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android.sunshine.app" >
+    package="com.maximbravo.upcoming.app" >
 
     <!-- This permission is necessary in order for Sunshine to perform network access. -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.maximbravo.upcoming.app.MainActivity"
             android:theme="@style/CalendarTheme"
             android:label="@string/app_name" >
             <intent-filter>
@@ -29,30 +29,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailActivity"
+            android:name="com.maximbravo.upcoming.app.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="com.maximbravo.upcoming.app.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.sunshine.app.MainActivity" />
+                android:value="com.maximbravo.upcoming.app.MainActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.maximbravo.upcoming.app.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.maximbravo.upcoming.app.MainActivity"
             android:theme="@style/SettingsTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.sunshine.app.MainActivity" />
+                android:value="com.maximbravo.upcoming.app.MainActivity" />
         </activity>
         <provider
             android:authorities="@string/content_authority"
-            android:name=".data.EventProvider"
+            android:name="com.maximbravo.upcoming.app.data.EventProvider"
             android:exported="false"
             android:syncable="true" />
 
         <!-- SyncAdapter's dummy authentication service -->
-        <service android:name=".sync.UpcomingAuthenticatorService">
+        <service android:name="com.maximbravo.upcoming.app.sync.UpcomingAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -63,7 +63,7 @@
 
         <!-- The SyncAdapter service -->
         <service
-            android:name=".sync.UpcomingSyncService"
+            android:name="com.maximbravo.upcoming.app.sync.UpcomingSyncService"
             android:exported="true"
             >
             <intent-filter>
