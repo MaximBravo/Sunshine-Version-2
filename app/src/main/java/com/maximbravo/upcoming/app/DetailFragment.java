@@ -16,12 +16,9 @@
 package com.maximbravo.upcoming.app;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,12 +28,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DetailFragment extends Fragment { //implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
     static final String DETAIL_URI = "URI";
@@ -127,7 +122,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+        getLoaderManager().initLoader(DETAIL_LOADER, null, null);
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -138,83 +133,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             long date = 565454;
 
 
-            getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+            getLoaderManager().restartLoader(DETAIL_LOADER, null, null);
         }
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if ( null != mUri ) {
-            // Now create and return a CursorLoader that will take care of
-            // creating a Cursor for the data being displayed.
-//            return new CursorLoader(
-//                    getActivity(),
-//                    mUri,
-//                    null,
-//                    null,
-//                    null,
-//                    null
-//            );
-        }
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (data != null && data.moveToFirst()) {
-            // Read event condition ID from cursor
-            int eventId = data.getInt(COL_WEATHER_CONDITION_ID);
-
-            // Use event art image
-            mIconView.setImageResource(Utility.getArtResourceForEventCondition(eventId));
-
-            // Read date from cursor and update views for day of week and date
-            long date = data.getLong(COL_WEATHER_DATE);
-            String friendlyDateText = Utility.getDayName(getActivity(), date);
-            String dateText = Utility.getFormattedMonthDay(getActivity(), date);
-            mFriendlyDateView.setText(friendlyDateText);
-            mDateView.setText(dateText);
-
-            // Read description from cursor and update view
-            String description = data.getString(COL_WEATHER_DESC);
-            mDescriptionView.setText(description);
-
-            // For accessibility, add a content description to the icon field
-            mIconView.setContentDescription(description);
-
-            // Read high temperature from cursor and update view
-            boolean isMetric = Utility.isMetric(getActivity());
-
-            double high = data.getDouble(COL_WEATHER_MAX_TEMP);
-            String highString = Utility.formatTemperature(getActivity(), high);
-            mHighTempView.setText(highString);
-
-            // Read low temperature from cursor and update view
-            double low = data.getDouble(COL_WEATHER_MIN_TEMP);
-            String lowString = Utility.formatTemperature(getActivity(), low);
-            mLowTempView.setText(lowString);
-
-            // Read humidity from cursor and update view
-            float humidity = data.getFloat(COL_WEATHER_HUMIDITY);
-            mHumidityView.setText(getActivity().getString(R.string.format_humidity, humidity));
-
-            // Read wind speed and direction from cursor and update view
-            float windSpeedStr = data.getFloat(COL_WEATHER_WIND_SPEED);
-            float windDirStr = data.getFloat(COL_WEATHER_DEGREES);
-            mWindView.setText(Utility.getFormattedWind(getActivity(), windSpeedStr, windDirStr));
-
-            // Read pressure from cursor and update view
-            float pressure = data.getFloat(COL_WEATHER_PRESSURE);
-            mPressureView.setText(getActivity().getString(R.string.format_pressure, pressure));
-
-            // We still need this for the share intent
-            mCalendar = String.format("%s - %s - %s/%s", dateText, description, high, low);
-
-            // If onCreateOptionsMenu has already happened, we need to update the share intent now.
-
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) { }
 }

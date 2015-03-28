@@ -3,10 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.maximbravo.upcoming.app.CalendarFragment">
-    <ListView
-        style="@style/CalendarListStyle"
-        android:id="@+id/listview_calendar"
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null" />
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:text="Today, Wed, April 15"
+            android:textSize="50sp"
+            android:layout_gravity="center_vertical"/>
+
+        <ListView
+            style="@style/CalendarListStyle"
+            android:id="@+id/listview_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:divider="@null" />
+
+    </LinearLayout>
 </FrameLayout>

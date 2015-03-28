@@ -30,12 +30,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  * Encapsulates fetching the calendar and displaying it as a {@link ListView} layout.
  */
 public class CalendarFragment extends Fragment { //implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String LOG_TAG = CalendarFragment.class.getSimpleName();
-
+    private CalendarAdapter mCalendarAdapter;
 
     private ListView mListView;
     private int mPosition = ListView.INVALID_POSITION;
@@ -46,19 +50,6 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
     private static final int CALENDAR_LOADER = 0;
     // For the calendar view we're showing only a small subset of the stored data.
     // Specify the columns we need.
-
-
-    // These indices are tied to CALENDAR_COLUMNS.  If CALENDAR_COLUMNS changes, these
-    // must change.
-    static final int COL_WEATHER_ID = 0;
-    static final int COL_WEATHER_DATE = 1;
-    static final int COL_WEATHER_DESC = 2;
-    static final int COL_WEATHER_MAX_TEMP = 3;
-    static final int COL_WEATHER_MIN_TEMP = 4;
-    static final int COL_LOCATION_SETTING = 5;
-    static final int COL_WEATHER_CONDITION_ID = 6;
-    static final int COL_COORD_LAT = 7;
-    static final int COL_COORD_LONG = 8;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -109,16 +100,35 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        long oneDay = 1000 * 60 * 60 * 24;
 
-        // The CalendarAdapter will take data from a source and
-        // use it to populate the ListView it's attached to.
-
+        // Find TextView and set formatted date on it
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+
+        List<String> calenderList = new ArrayList<>();
+        for(int i = 1; i < 8; i++) {
+            long dateInMillis = new Date().getTime() + oneDay * i;
+            String date = Utility.getFriendlyDayString(getActivity(), dateInMillis);
+
+            calenderList.add(date);
+        }
+
+
+
+        // The CalendarAdapter will take data from a source and
+        // use it to populate the ListView it's attached to.
+        mCalendarAdapter = new CalendarAdapter(
+                getActivity(),
+                R.layout.list_item_calendar_header,
+                calenderList);
+
+
+
         // Get a reference to the ListView, and attach this adapter to it.
         mListView = (ListView) rootView.findViewById(R.id.listview_calendar);
-
+        mListView.setAdapter(mCalendarAdapter);
         // We'll call our MainActivity
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -147,6 +157,7 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
             mPosition = savedInstanceState.getInt(SELECTED_KEY);
         }
 
+        mCalendarAdapter.setUseTodayLayout(mUseTodayLayout);
 
 
         return rootView;
@@ -160,6 +171,9 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
 
     // since we read the location when we create the loader, all we need to do is restart things
 
+    private void updateEvent() {
+        //UpcomingSyncAdapter.syncImmediately(getActivity());
+    }
 
 
 
@@ -168,7 +182,8 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
         // intent can is detailed in the "Common Intents" page of Android's developer site:
         // http://developer.android.com/guide/components/intents-common.html#Maps
 
-        //if ( null != c ) {
+        if ( null != mCalendarAdapter) {
+            //Cursor c = mCalendarAdapter.getCursor();
             //c.moveToPosition(0);
             String posLat = "1";//c.getString(COL_COORD_LAT);
             String posLong = "2";//c.getString(COL_COORD_LONG);
@@ -185,6 +200,7 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
         //}
 
     }
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -199,6 +215,8 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
 
     public void setUseTodayLayout(boolean useTodayLayout) {
         mUseTodayLayout = useTodayLayout;
-
+        if (mCalendarAdapter != null) {
+            mCalendarAdapter.setUseTodayLayout(mUseTodayLayout);
+        }
     }
 }

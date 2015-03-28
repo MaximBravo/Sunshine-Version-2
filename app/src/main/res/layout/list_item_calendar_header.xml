@@ -1,0 +1,12 @@
+<!-- Layout for calendar list item for today -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:background="@drawable/today_touch_selector"
+    android:textAppearance="?android:textAppearanceLarge"
+    android:fontFamily="sans-serif-condensed"
+    android:gravity="center"
+    android:textColor="@color/white"
+    android:text="Mon, Mar 30"/>
+
