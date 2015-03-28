@@ -21,10 +21,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +31,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.maximbravo.upcoming.app.data.EventContract;
+
 
 /**
  * A placeholder fragment containing a simple view.
@@ -46,27 +43,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private static final String CALENDAR_SHARE_HASHTAG = " #UpcomingApp";
 
-    private ShareActionProvider mShareActionProvider;
+
     private String mCalendar;
     private Uri mUri;
 
     private static final int DETAIL_LOADER = 0;
 
-    private static final String[] DETAIL_COLUMNS = {
-            EventContract.EventEntry.TABLE_NAME + "." + EventContract.EventEntry._ID,
-            EventContract.EventEntry.COLUMN_DATE,
-            EventContract.EventEntry.COLUMN_SHORT_DESC,
-            EventContract.EventEntry.COLUMN_MAX_TEMP,
-            EventContract.EventEntry.COLUMN_MIN_TEMP,
-            EventContract.EventEntry.COLUMN_HUMIDITY,
-            EventContract.EventEntry.COLUMN_PRESSURE,
-            EventContract.EventEntry.COLUMN_WIND_SPEED,
-            EventContract.EventEntry.COLUMN_DEGREES,
-            EventContract.EventEntry.COLUMN_WEATHER_ID,
-            // This works because the EventProvider returns location data joined with
-            // event data, even though they're stored in two different tables.
-            EventContract.LocationEntry.COLUMN_LOCATION_SETTING
-    };
+
 
     // These indices are tied to DETAIL_COLUMNS.  If DETAIL_COLUMNS changes, these
     // must change.
@@ -125,12 +108,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // Retrieve the share menu item
         MenuItem menuItem = menu.findItem(R.id.action_share);
 
-        // Get the provider and hold onto it to set/change the share intent.
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+
 
         // If onLoadFinished happens before this, we can go ahead and set the share intent now.
         if (mCalendar != null) {
-            mShareActionProvider.setShareIntent(createShareCalendarIntent());
+
         }
     }
 
@@ -152,9 +135,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // replace the uri, since the location has changed
         Uri uri = mUri;
         if (null != uri) {
-            long date = EventContract.EventEntry.getDateFromUri(uri);
-            Uri updatedUri = EventContract.EventEntry.buildEventLocationWithDate(newLocation, date);
-            mUri = updatedUri;
+            long date = 565454;
+
+
             getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
         }
     }
@@ -164,14 +147,14 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         if ( null != mUri ) {
             // Now create and return a CursorLoader that will take care of
             // creating a Cursor for the data being displayed.
-            return new CursorLoader(
-                    getActivity(),
-                    mUri,
-                    DETAIL_COLUMNS,
-                    null,
-                    null,
-                    null
-            );
+//            return new CursorLoader(
+//                    getActivity(),
+//                    mUri,
+//                    null,
+//                    null,
+//                    null,
+//                    null
+//            );
         }
         return null;
     }
@@ -228,9 +211,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mCalendar = String.format("%s - %s - %s/%s", dateText, description, high, low);
 
             // If onCreateOptionsMenu has already happened, we need to update the share intent now.
-            if (mShareActionProvider != null) {
-                mShareActionProvider.setShareIntent(createShareCalendarIntent());
-            }
+
         }
     }
 

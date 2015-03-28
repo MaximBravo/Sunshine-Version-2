@@ -22,7 +22,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.maximbravo.upcoming.app.sync.UpcomingSyncAdapter;
+
 
 public class MainActivity extends ActionBarActivity implements CalendarFragment.Callback {
 
@@ -60,7 +60,7 @@ public class MainActivity extends ActionBarActivity implements CalendarFragment.
                 .findFragmentById(R.id.fragment_calendar));
         calendarFragment.setUseTodayLayout(!mTwoPane);
 
-        UpcomingSyncAdapter.initializeSyncAdapter(this);
+
     }
 
     @Override
@@ -90,11 +90,12 @@ public class MainActivity extends ActionBarActivity implements CalendarFragment.
     protected void onResume() {
         super.onResume();
         String location = Utility.getPreferredLocation( this );
+        int hi = 0;
         // update the location in our second pane using the fragment manager
             if (location != null && !location.equals(mLocation)) {
             CalendarFragment ff = (CalendarFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_calendar);
             if ( null != ff ) {
-                ff.onLocationChanged();
+                hi = 0;
             }
             DetailFragment df = (DetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
             if ( null != df ) {
