@@ -186,29 +186,7 @@ public class Utility {
     public static int getIconResourceForEventCondition(int eventId) {
         // Based on event code data found at:
         // http://bugs.openeventmap.org/projects/api/wiki/Event_Condition_Codes
-        if (eventId >= 200 && eventId <= 232) {
-            return R.drawable.ic_storm;
-        } else if (eventId >= 300 && eventId <= 321) {
-            return R.drawable.ic_light_rain;
-        } else if (eventId >= 500 && eventId <= 504) {
-            return R.drawable.ic_rain;
-        } else if (eventId == 511) {
-            return R.drawable.ic_snow;
-        } else if (eventId >= 520 && eventId <= 531) {
-            return R.drawable.ic_rain;
-        } else if (eventId >= 600 && eventId <= 622) {
-            return R.drawable.ic_snow;
-        } else if (eventId >= 701 && eventId <= 761) {
-            return R.drawable.ic_fog;
-        } else if (eventId == 761 || eventId == 781) {
-            return R.drawable.ic_storm;
-        } else if (eventId == 800) {
-            return R.drawable.ic_clear;
-        } else if (eventId == 801) {
-            return R.drawable.ic_light_clouds;
-        } else if (eventId >= 802 && eventId <= 804) {
-            return R.drawable.ic_cloudy;
-        }
+
         return -1;
     }
 
@@ -221,29 +199,7 @@ public class Utility {
     public static int getArtResourceForEventCondition(int eventId) {
         // Based on event code data found at:
         // http://bugs.openeventmap.org/projects/api/wiki/Event_Condition_Codes
-        if (eventId >= 200 && eventId <= 232) {
-            return R.drawable.art_storm;
-        } else if (eventId >= 300 && eventId <= 321) {
-            return R.drawable.art_light_rain;
-        } else if (eventId >= 500 && eventId <= 504) {
-            return R.drawable.art_rain;
-        } else if (eventId == 511) {
-            return R.drawable.art_snow;
-        } else if (eventId >= 520 && eventId <= 531) {
-            return R.drawable.art_rain;
-        } else if (eventId >= 600 && eventId <= 622) {
-            return R.drawable.art_snow;
-        } else if (eventId >= 701 && eventId <= 761) {
-            return R.drawable.art_fog;
-        } else if (eventId == 761 || eventId == 781) {
-            return R.drawable.art_storm;
-        } else if (eventId == 800) {
-            return R.drawable.art_clear;
-        } else if (eventId == 801) {
-            return R.drawable.art_light_clouds;
-        } else if (eventId >= 802 && eventId <= 804) {
-            return R.drawable.art_clouds;
-        }
+
         return -1;
     }
 }
