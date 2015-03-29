@@ -15,11 +15,16 @@
  */
 package com.maximbravo.upcoming.app;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -98,29 +103,10 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        String[][] eventNames = {
-            { "Brush teeth",
-              "Eat breakfast",
-        }, {
-        }, {
-            "Wake up",
-            "Change",
-            "Bathroom",
-        }};
-
-        String[][] eventTimes = {
-            {"9:00 - 9:30 AM",
-             "9:30 - 10:30 AM",
-        }, {
-        }, {
-            "7:00 - 7:30 AM",
-            "7:30 - 7:40 AM",
-            "7:40 - 12:30 AM funny right.",
-        }};
         List<CalendarItem> calenderList = new ArrayList<>();
+        List<Event> events = queryEvents();
 
-
-        for(int day = 0; day < 3; day++) {
+        for(int day = 0; day < 1; day++) {
             long dateInMillis = new Date().getTime() + oneDay * day;
             String date = Utility.getFriendlyDayString(getActivity(), dateInMillis);
             CalendarItem headerItem = new CalendarItem();
@@ -128,10 +114,7 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
             headerItem.type = CalendarItem.VIEW_TYPE_HEADER;
             calenderList.add(headerItem);
 
-            String[] eventsInADay = eventNames[day];
-            String[] eventTimesInADay = eventTimes[day];
-            int numberOfEvents = eventsInADay.length;
-
+            int numberOfEvents = events.size();
             if (numberOfEvents == 0) {
                 CalendarItem eventItem = new CalendarItem();
                 eventItem.name = "No events";
@@ -139,10 +122,12 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
                 eventItem.type = CalendarItem.VIEW_TYPE_EVENT;
                 calenderList.add(eventItem);
             } else {
-                for (int i = 0; i < numberOfEvents; i++) {
+                for (Event event : events) {
                     CalendarItem eventItem = new CalendarItem();
-                    eventItem.name = eventsInADay[i];
-                    eventItem.time = eventTimesInADay[i];
+                    eventItem.name = event.title;
+                    String time = Utility.getTimeString(getActivity(), event.begin)
+                            + " - " + Utility.getTimeString(getActivity(), event.end);
+                    eventItem.time = time;
                     eventItem.type = CalendarItem.VIEW_TYPE_EVENT;
                     calenderList.add(eventItem);
                 }
@@ -248,6 +233,76 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
         mUseTodayLayout = useTodayLayout;
         if (mCalendarAdapter != null) {
             mCalendarAdapter.setUseTodayLayout(mUseTodayLayout);
+        }
+    }
+
+    private List<Event> queryEvents() {
+
+        // Query calendar events in the next 24 hours.
+        Time time = new Time();
+        time.setToNow();
+        long beginTime = time.toMillis(true);
+        time.monthDay++;
+        time.normalize(true);
+        long endTime = time.normalize(true);
+
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
+        ContentUris.appendId(builder, beginTime);
+        ContentUris.appendId(builder, endTime);
+
+         final String[] INSTANCE_PROJECTION = {
+                CalendarContract.Instances._ID,
+                CalendarContract.Instances.EVENT_ID,
+                CalendarContract.Instances.TITLE,
+                CalendarContract.Instances.BEGIN,
+                CalendarContract.Instances.END,
+                CalendarContract.Instances.ALL_DAY,
+                CalendarContract.Instances.DESCRIPTION,
+                CalendarContract.Instances.ORGANIZER
+        };
+
+        final String[] CONTACT_PROJECTION = new String[] { ContactsContract.Data._ID, ContactsContract.Data.CONTACT_ID };
+        final String CONTACT_SELECTION = ContactsContract.CommonDataKinds.Email.ADDRESS + " = ?";
+
+        Cursor cursor = contentResolver.query(builder.build(), INSTANCE_PROJECTION,
+                null /* selection */, null /* selectionArgs */, null /* sortOrder */);
+        try {
+            int idIdx = cursor.getColumnIndex(CalendarContract.Instances._ID);
+            int eventIdIdx = cursor.getColumnIndex(CalendarContract.Instances.EVENT_ID);
+            int titleIdx = cursor.getColumnIndex(CalendarContract.Instances.TITLE);
+            int beginIdx = cursor.getColumnIndex(CalendarContract.Instances.BEGIN);
+            int endIdx = cursor.getColumnIndex(CalendarContract.Instances.END);
+            int allDayIdx = cursor.getColumnIndex(CalendarContract.Instances.ALL_DAY);
+            int descIdx = cursor.getColumnIndex(CalendarContract.Instances.DESCRIPTION);
+            int ownerEmailIdx = cursor.getColumnIndex(CalendarContract.Instances.ORGANIZER);
+
+            List<Event> events = new ArrayList<Event>(cursor.getCount());
+            while (cursor.moveToNext()) {
+                Event event = new Event();
+                event.id = cursor.getLong(idIdx);
+                event.eventId = cursor.getLong(eventIdIdx);
+                event.title = cursor.getString(titleIdx);
+                event.begin = cursor.getLong(beginIdx);
+                event.end = cursor.getLong(endIdx);
+                event.allDay = cursor.getInt(allDayIdx) != 0;
+                event.description = cursor.getString(descIdx);
+                String ownerEmail = cursor.getString(ownerEmailIdx);
+                Cursor contactCursor = contentResolver.query(ContactsContract.Data.CONTENT_URI,
+                        CONTACT_PROJECTION, CONTACT_SELECTION, new String[] {ownerEmail}, null);
+                int ownerIdIdx = contactCursor.getColumnIndex(ContactsContract.Data.CONTACT_ID);
+                long ownerId = -1;
+                if (contactCursor.moveToFirst()) {
+                    ownerId = contactCursor.getLong(ownerIdIdx);
+                }
+                contactCursor.close();
+                // Use event organizer's profile picture as the notification background.
+                //event.ownerProfilePic = getProfilePicture(contentResolver, context, ownerId);
+                events.add(event);
+            }
+            return events;
+        } finally {
+            cursor.close();
         }
     }
 }

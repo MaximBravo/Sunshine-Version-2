@@ -203,4 +203,11 @@ public class Utility {
 
         return -1;
     }
+
+    public static String getTimeString(Context context, long dateInMillis) {
+        SimpleDateFormat shortenedDateFormat = new SimpleDateFormat("h:mm a");
+
+        return shortenedDateFormat.format(dateInMillis);
+
+    }
 }

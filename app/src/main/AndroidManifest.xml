@@ -4,6 +4,9 @@
 
     <!-- This permission is necessary in order for Upcoming to perform network access. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <!-- Permissions required by the sync adapter -->
     <uses-permission
