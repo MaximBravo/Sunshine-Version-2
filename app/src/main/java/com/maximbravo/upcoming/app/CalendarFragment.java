@@ -180,65 +180,6 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
         return rootView;
     }
 
-
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        //getLoaderManager().initLoader(CALENDAR_LOADER, null, this);
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    // since we read the location when we create the loader, all we need to do is restart things
-
-    private void updateEvent() {
-        //UpcomingSyncAdapter.syncImmediately(getActivity());
-    }
-
-
-
-    private void openPreferredLocationInMap() {
-        // Using the URI scheme for showing a location found on a map.  This super-handy
-        // intent can is detailed in the "Common Intents" page of Android's developer site:
-        // http://developer.android.com/guide/components/intents-common.html#Maps
-
-        if ( null != mCalendarAdapter) {
-            //Cursor c = mCalendarAdapter.getCursor();
-            //c.moveToPosition(0);
-            String posLat = "1";//c.getString(COL_COORD_LAT);
-            String posLong = "2";//c.getString(COL_COORD_LONG);
-            Uri geoLocation = Uri.parse("geo:" + posLat + "," + posLong);
-
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(geoLocation);
-
-            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                startActivity(intent);
-            } else {
-                Log.d(LOG_TAG, "Couldn't call " + geoLocation.toString() + ", no receiving apps installed!");
-            }
-        //}
-
-    }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        // When tablets rotate, the currently selected list item needs to be saved.
-        // When no item is selected, mPosition will be set to Listview.INVALID_POSITION,
-        // so check for that before storing.
-        if (mPosition != ListView.INVALID_POSITION) {
-            outState.putInt(SELECTED_KEY, mPosition);
-        }
-        super.onSaveInstanceState(outState);
-    }
-
-    public void setUseTodayLayout(boolean useTodayLayout) {
-        mUseTodayLayout = useTodayLayout;
-        if (mCalendarAdapter != null) {
-            mCalendarAdapter.setUseTodayLayout(mUseTodayLayout);
-        }
-    }
-
     private List<Event> queryEvents(long begin, long end) {
 
         ContentResolver contentResolver = getActivity().getContentResolver();
@@ -300,4 +241,63 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
             cursor.close();
         }
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        //getLoaderManager().initLoader(CALENDAR_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    // since we read the location when we create the loader, all we need to do is restart things
+
+    private void updateEvent() {
+        //UpcomingSyncAdapter.syncImmediately(getActivity());
+    }
+
+
+
+    private void openPreferredLocationInMap() {
+        // Using the URI scheme for showing a location found on a map.  This super-handy
+        // intent can is detailed in the "Common Intents" page of Android's developer site:
+        // http://developer.android.com/guide/components/intents-common.html#Maps
+
+        if ( null != mCalendarAdapter) {
+            //Cursor c = mCalendarAdapter.getCursor();
+            //c.moveToPosition(0);
+            String posLat = "1";//c.getString(COL_COORD_LAT);
+            String posLong = "2";//c.getString(COL_COORD_LONG);
+            Uri geoLocation = Uri.parse("geo:" + posLat + "," + posLong);
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(geoLocation);
+
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                Log.d(LOG_TAG, "Couldn't call " + geoLocation.toString() + ", no receiving apps installed!");
+            }
+        //}
+
+    }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // When tablets rotate, the currently selected list item needs to be saved.
+        // When no item is selected, mPosition will be set to Listview.INVALID_POSITION,
+        // so check for that before storing.
+        if (mPosition != ListView.INVALID_POSITION) {
+            outState.putInt(SELECTED_KEY, mPosition);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    public void setUseTodayLayout(boolean useTodayLayout) {
+        mUseTodayLayout = useTodayLayout;
+        if (mCalendarAdapter != null) {
+            mCalendarAdapter.setUseTodayLayout(mUseTodayLayout);
+        }
+    }
+
+
 }
