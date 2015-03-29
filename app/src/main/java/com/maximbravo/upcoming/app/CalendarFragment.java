@@ -47,16 +47,6 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
 
     private static final String SELECTED_KEY = "selected_position";
 
-    private static final int CALENDAR_LOADER = 0;
-    // For the calendar view we're showing only a small subset of the stored data.
-    // Specify the columns we need.
-
-    /**
-     * A callback interface that all activities containing this fragment must
-     * implement. This mechanism allows activities to be notified of item
-     * selections.
-     */
-
     public interface Callback {
         /**
          * DetailFragmentCallback for when an item has been selected.
@@ -97,6 +87,8 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
         return super.onOptionsItemSelected(item);
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,15 +98,56 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+        String[][] eventNames = {
+            { "Brush teeth",
+              "Eat breakfast",
+        }, {
+        }, {
+            "Wake up",
+            "Change",
+            "Bathroom",
+        }};
 
-        List<String> calenderList = new ArrayList<>();
-        for(int i = 1; i < 8; i++) {
-            long dateInMillis = new Date().getTime() + oneDay * i;
+        String[][] eventTimes = {
+            {"9:00 - 9:30 AM",
+             "9:30 - 10:30 AM",
+        }, {
+        }, {
+            "7:00 - 7:30 AM",
+            "7:30 - 7:40 AM",
+            "7:40 - 12:30 AM funny right.",
+        }};
+        List<CalendarItem> calenderList = new ArrayList<>();
+
+
+        for(int day = 0; day < 3; day++) {
+            long dateInMillis = new Date().getTime() + oneDay * (day + 1);
             String date = Utility.getFriendlyDayString(getActivity(), dateInMillis);
+            CalendarItem headerItem = new CalendarItem();
+            headerItem.time = date;
+            headerItem.type = CalendarItem.VIEW_TYPE_HEADER;
+            calenderList.add(headerItem);
 
-            calenderList.add(date);
+            String[] eventsInADay = eventNames[day];
+            String[] eventTimesInADay = eventTimes[day];
+            int numberOfEvents = eventsInADay.length;
+
+            if (numberOfEvents == 0) {
+                CalendarItem eventItem = new CalendarItem();
+                eventItem.name = "No events";
+                eventItem.time = "";
+                eventItem.type = CalendarItem.VIEW_TYPE_EVENT;
+                calenderList.add(eventItem);
+            } else {
+                for (int i = 0; i < numberOfEvents; i++) {
+                    CalendarItem eventItem = new CalendarItem();
+                    eventItem.name = eventsInADay[i];
+                    eventItem.time = eventTimesInADay[i];
+                    eventItem.type = CalendarItem.VIEW_TYPE_EVENT;
+                    calenderList.add(eventItem);
+                }
+            }
         }
-
 
 
         // The CalendarAdapter will take data from a source and
@@ -123,8 +156,6 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
                 getActivity(),
                 R.layout.list_item_calendar_header,
                 calenderList);
-
-
 
         // Get a reference to the ListView, and attach this adapter to it.
         mListView = (ListView) rootView.findViewById(R.id.listview_calendar);
