@@ -121,7 +121,7 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
 
 
         for(int day = 0; day < 3; day++) {
-            long dateInMillis = new Date().getTime() + oneDay * (day + 1);
+            long dateInMillis = new Date().getTime() + oneDay * day;
             String date = Utility.getFriendlyDayString(getActivity(), dateInMillis);
             CalendarItem headerItem = new CalendarItem();
             headerItem.time = date;

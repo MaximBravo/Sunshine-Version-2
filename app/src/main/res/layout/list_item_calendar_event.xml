@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
             android:textSize="20sp"
-            android:text="Upcoming Event!"/>
+            android:text="Upcoming Event!"
+            android:layout_marginLeft="16dp"/>
 
         <TextView
             android:id="@+id/list_item_event_time"
@@ -28,7 +29,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
             android:textAppearance="?android:textAppearanceSmall"
-            android:text="9:00 - 9:30 AM"/>
+            android:text="9:00 - 9:30 AM"
+            android:layout_marginLeft="16dp"/>
 
     </LinearLayout>
 </LinearLayout>
