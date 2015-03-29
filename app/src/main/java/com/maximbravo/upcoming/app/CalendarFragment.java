@@ -24,7 +24,6 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -104,11 +103,14 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         List<CalendarItem> calenderList = new ArrayList<>();
-        List<Event> events = queryEvents();
 
-        for(int day = 0; day < 1; day++) {
-            long dateInMillis = new Date().getTime() + oneDay * day;
+        long millisNow = new Date().getTime();
+
+        for(int day = 0; day < 7; day++) {
+            // Get the current time and add "day"
+            long dateInMillis = millisNow + oneDay * day;
             String date = Utility.getFriendlyDayString(getActivity(), dateInMillis);
+            List<Event> events = queryEvents(dateInMillis, dateInMillis + oneDay - 1);
             CalendarItem headerItem = new CalendarItem();
             headerItem.time = date;
             headerItem.type = CalendarItem.VIEW_TYPE_HEADER;
@@ -133,7 +135,6 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
                 }
             }
         }
-
 
         // The CalendarAdapter will take data from a source and
         // use it to populate the ListView it's attached to.
@@ -178,6 +179,8 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
 
         return rootView;
     }
+
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -236,22 +239,14 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
         }
     }
 
-    private List<Event> queryEvents() {
-
-        // Query calendar events in the next 24 hours.
-        Time time = new Time();
-        time.setToNow();
-        long beginTime = time.toMillis(true);
-        time.monthDay++;
-        time.normalize(true);
-        long endTime = time.normalize(true);
+    private List<Event> queryEvents(long begin, long end) {
 
         ContentResolver contentResolver = getActivity().getContentResolver();
         Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
-        ContentUris.appendId(builder, beginTime);
-        ContentUris.appendId(builder, endTime);
+        ContentUris.appendId(builder, begin);
+        ContentUris.appendId(builder, end);
 
-         final String[] INSTANCE_PROJECTION = {
+        final String[] INSTANCE_PROJECTION = {
                 CalendarContract.Instances._ID,
                 CalendarContract.Instances.EVENT_ID,
                 CalendarContract.Instances.TITLE,
