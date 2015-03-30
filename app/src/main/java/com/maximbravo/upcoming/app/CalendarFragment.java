@@ -131,6 +131,7 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
                             + " - " + Utility.getTimeString(getActivity(), event.end);
                     eventItem.time = time;
                     eventItem.type = CalendarItem.VIEW_TYPE_EVENT;
+                    eventItem.description = event.description;
                     calenderList.add(eventItem);
                 }
             }
@@ -138,7 +139,8 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
 
         // The CalendarAdapter will take data from a source and
         // use it to populate the ListView it's attached to.
-        mCalendarAdapter = new CalendarAdapter(
+        mCalendarAdapter =
+                new CalendarAdapter(
                 getActivity(),
                 R.layout.list_item_calendar_header,
                 calenderList);
@@ -149,17 +151,16 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
         // We'll call our MainActivity
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            @Override
+//            @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // CursorAdapter returns a cursor at the correct position for getItem(), or null
-                // if it cannot seek to that position.
-                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                if (cursor != null) {
-                    String locationSetting = Utility.getPreferredLocation(getActivity());
-                    ((Callback) getActivity())
-                            .onItemSelected(null);
-                }
-                mPosition = position;
+
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.putExtra("ItemName", mCalendarAdapter.getItem(position).name);
+                intent.putExtra("ItemTime", mCalendarAdapter.getItem(position).time);
+                intent.putExtra("ItemType", mCalendarAdapter.getItem(position).type);
+                intent.putExtra("ItemDescription", mCalendarAdapter.getItem(position).description);
+                startActivity(intent);
+
             }
         });
 

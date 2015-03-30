@@ -7,6 +7,7 @@ public class CalendarItem {
     public int type;
     public String name;
     public String time;
+    public String description;
 
 
     public static final int VIEW_TYPE_COUNT = 2;

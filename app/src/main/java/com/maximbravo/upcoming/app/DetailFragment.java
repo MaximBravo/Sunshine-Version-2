@@ -71,6 +71,7 @@ public class DetailFragment extends Fragment { //implements LoaderManager.Loader
 
     public DetailFragment() {
         setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -83,16 +84,49 @@ public class DetailFragment extends Fragment { //implements LoaderManager.Loader
         }
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-        mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
-        mDateView = (TextView) rootView.findViewById(R.id.detail_date_textview);
-        mFriendlyDateView = (TextView) rootView.findViewById(R.id.detail_day_textview);
-        mDescriptionView = (TextView) rootView.findViewById(R.id.detail_calendar_textview);
-        mHighTempView = (TextView) rootView.findViewById(R.id.detail_high_textview);
-        mLowTempView = (TextView) rootView.findViewById(R.id.detail_low_textview);
-        mHumidityView = (TextView) rootView.findViewById(R.id.detail_humidity_textview);
-        mWindView = (TextView) rootView.findViewById(R.id.detail_wind_textview);
-        mPressureView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
+
+        //View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+
+        // The detail Activity called via intent.  Inspect the intent for forecast data.
+        Intent intent = getActivity().getIntent();
+        if (intent != null && intent.hasExtra("ItemName")) {
+            String calendarStrName = intent.getStringExtra("ItemName");
+            ((TextView) rootView.findViewById(R.id.detail_event))
+                    .setText(calendarStrName);
+        }
+
+        if (intent != null && intent.hasExtra("ItemTime")) {
+            String caledarStrTime = intent.getStringExtra("ItemTime");
+            ((TextView) rootView.findViewById(R.id.detail_time))
+                    .setText(caledarStrTime);
+        }
+
+//        if (intent != null && intent.hasExtra("ItemType")) {
+//            int calendarIntType = intent.getIntExtra("ItemType", CalendarItem.VIEW_TYPE_HEADER);
+//            ((TextView) rootView.findViewById(R.id.detail_type))
+//                    .setText(calendarIntType);
+//        }
+
+        if (intent != null && intent.hasExtra("ItemDescription")) {
+            String caledarStrDescription = intent.getStringExtra("ItemDescription");
+            ((TextView) rootView.findViewById(R.id.detail_description))
+                    .setText("Description" + ": " + caledarStrDescription);
+        }
+
         return rootView;
+
+//        mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
+//        mDateView = (TextView) rootView.findViewById(R.id.detail_time);
+//        mFriendlyDateView = (TextView) rootView.findViewById(R.id.detail_event);
+//        mDescriptionView = (TextView) rootView.findViewById(R.id.detail_calendar_textview);
+//        mHighTempView = (TextView) rootView.findViewById(R.id.detail_high_textview);
+//        mLowTempView = (TextView) rootView.findViewById(R.id.detail_description);
+//        mHumidityView = (TextView) rootView.findViewById(R.id.detail_humidity_textview);
+//        mWindView = (TextView) rootView.findViewById(R.id.detail_wind_textview);
+//        mPressureView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
+//        return rootView;
+
+
     }
 
     @Override
@@ -122,7 +156,7 @@ public class DetailFragment extends Fragment { //implements LoaderManager.Loader
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(DETAIL_LOADER, null, null);
+//        getLoaderManager().initLoader(DETAIL_LOADER, null, null);
         super.onActivityCreated(savedInstanceState);
     }
 
