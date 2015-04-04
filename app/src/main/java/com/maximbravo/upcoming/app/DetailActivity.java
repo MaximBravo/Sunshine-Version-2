@@ -30,11 +30,10 @@ public class DetailActivity extends ActionBarActivity {
         setContentView(R.layout.activity_detail);
 
         if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
+            // Create the detail fragment and add it to the activity using a fragment transaction.
 
             Bundle arguments = new Bundle();
-            arguments.putParcelable(DetailFragment.DETAIL_URI, getIntent().getData());
+            arguments.putParcelable(DetailFragment.DETAIL_URI, getIntent());
 
             DetailFragment fragment = new DetailFragment();
             fragment.setArguments(arguments);
@@ -44,11 +43,6 @@ public class DetailActivity extends ActionBarActivity {
                     .commit();
         }
     }
-
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

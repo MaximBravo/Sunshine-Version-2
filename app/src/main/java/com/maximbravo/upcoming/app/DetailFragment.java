@@ -41,7 +41,7 @@ public class DetailFragment extends Fragment { //implements LoaderManager.Loader
     private String mCalendar;
     //private Uri mUri;
 
-    private static final int DETAIL_LOADER = 0;
+    //private static final int DETAIL_LOADER = 0;
 
 
 
@@ -77,16 +77,15 @@ public class DetailFragment extends Fragment { //implements LoaderManager.Loader
                              Bundle savedInstanceState) {
 
         Bundle arguments = getArguments();
-        Intent intent;
+        Intent intent = null;
         if (arguments != null) {
             intent = arguments.getParcelable(DetailFragment.DETAIL_URI);
-        } else {
+        }
+        if (intent == null) {
             intent = getActivity().getIntent();
         }
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-
-        //View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
         // The detail Activity called via intent.  Inspect the intent for forecast data.
 

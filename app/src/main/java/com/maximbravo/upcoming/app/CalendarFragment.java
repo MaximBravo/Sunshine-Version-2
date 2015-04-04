@@ -106,7 +106,7 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
 
         long millisNow = new Date().getTime();
 
-        for(int day = 0; day < 7; day++) {
+        for(int day = 0; day < 14; day++) {
             // Get the current time and add "day"
             long dateInMillis = millisNow + oneDay * day;
             String date = Utility.getFriendlyDayString(getActivity(), dateInMillis);
@@ -150,8 +150,6 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
         mListView.setAdapter(mCalendarAdapter);
         // We'll call our MainActivity
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-//            @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("ItemName", mCalendarAdapter.getItem(position).name);
