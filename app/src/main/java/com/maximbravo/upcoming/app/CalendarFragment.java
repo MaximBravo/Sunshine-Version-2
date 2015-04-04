@@ -55,7 +55,7 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
         /**
          * DetailFragmentCallback for when an item has been selected.
          */
-        public void onItemSelected(Uri dateUri);
+        public void onItemSelected(Intent intent);
     }
 
     public CalendarFragment() {
@@ -153,14 +153,13 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
 
 //            @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("ItemName", mCalendarAdapter.getItem(position).name);
                 intent.putExtra("ItemTime", mCalendarAdapter.getItem(position).time);
                 intent.putExtra("ItemType", mCalendarAdapter.getItem(position).type);
                 intent.putExtra("ItemDescription", mCalendarAdapter.getItem(position).description);
-                startActivity(intent);
 
+                ((Callback) getActivity()).onItemSelected(intent);
             }
         });
 

@@ -15,13 +15,15 @@
  */
 package com.maximbravo.upcoming.app;
 
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.view.Surface;
+import android.view.WindowManager;
 
 
 public class MainActivity extends ActionBarActivity implements CalendarFragment.Callback {
@@ -37,7 +39,14 @@ public class MainActivity extends ActionBarActivity implements CalendarFragment.
         super.onCreate(savedInstanceState);
         mLocation = Utility.getPreferredLocation(this);
 
-        setContentView(R.layout.activity_main);
+        Display display = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int rotation = display.getRotation();
+
+        if(rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) {
+            setContentView(R.layout.activity_main_landscape);
+        } else {
+            setContentView(R.layout.activity_main);
+        }
         if (findViewById(R.id.event_detail_container) != null) {
             // The detail container view will be present only in the large-screen layouts
             // (res/layout-sw600dp). If this view is present, then the activity should be
@@ -71,6 +80,24 @@ public class MainActivity extends ActionBarActivity implements CalendarFragment.
     }
 
     @Override
+    public void onItemSelected(Intent intent) {
+        if (mTwoPane) {
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+            Bundle args = new Bundle();
+            args.putParcelable(DetailFragment.DETAIL_URI, intent);
+            DetailFragment fragment = new DetailFragment();
+            fragment.setArguments(args);
+            getSupportFragmentManager().beginTransaction()
+            .replace(R.id.event_detail_container, fragment, DETAILFRAGMENT_TAG)
+            .commit();
+        } else {
+             startActivity(intent);
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -90,40 +117,17 @@ public class MainActivity extends ActionBarActivity implements CalendarFragment.
     protected void onResume() {
         super.onResume();
         String location = Utility.getPreferredLocation( this );
-        int hi = 0;
         // update the location in our second pane using the fragment manager
-            if (location != null && !location.equals(mLocation)) {
+        if (location != null && !location.equals(mLocation)) {
             CalendarFragment ff = (CalendarFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_calendar);
             if ( null != ff ) {
-                hi = 0;
+
             }
             DetailFragment df = (DetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
             if ( null != df ) {
-                df.onLocationChanged(location);
+                //df.onLocationChanged(location);
             }
             mLocation = location;
-        }
-    }
-
-    @Override
-    public void onItemSelected(Uri contentUri) {
-        if (mTwoPane) {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
-            Bundle args = new Bundle();
-            args.putParcelable(DetailFragment.DETAIL_URI, contentUri);
-
-            DetailFragment fragment = new DetailFragment();
-            fragment.setArguments(args);
-
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.event_detail_container, fragment, DETAILFRAGMENT_TAG)
-                    .commit();
-        } else {
-            Intent intent = new Intent(this, DetailActivity.class)
-                    .setData(contentUri);
-            startActivity(intent);
         }
     }
 }

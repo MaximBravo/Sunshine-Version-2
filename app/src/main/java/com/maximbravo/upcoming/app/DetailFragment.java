@@ -16,7 +16,6 @@
 package com.maximbravo.upcoming.app;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -40,7 +39,7 @@ public class DetailFragment extends Fragment { //implements LoaderManager.Loader
 
 
     private String mCalendar;
-    private Uri mUri;
+    //private Uri mUri;
 
     private static final int DETAIL_LOADER = 0;
 
@@ -78,8 +77,11 @@ public class DetailFragment extends Fragment { //implements LoaderManager.Loader
                              Bundle savedInstanceState) {
 
         Bundle arguments = getArguments();
+        Intent intent;
         if (arguments != null) {
-            mUri = arguments.getParcelable(DetailFragment.DETAIL_URI);
+            intent = arguments.getParcelable(DetailFragment.DETAIL_URI);
+        } else {
+            intent = getActivity().getIntent();
         }
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
@@ -87,7 +89,7 @@ public class DetailFragment extends Fragment { //implements LoaderManager.Loader
         //View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
         // The detail Activity called via intent.  Inspect the intent for forecast data.
-        Intent intent = getActivity().getIntent();
+
         if (intent != null && intent.hasExtra("ItemName")) {
             String calendarStrName = intent.getStringExtra("ItemName");
             ((TextView) rootView.findViewById(R.id.detail_event))
@@ -113,19 +115,6 @@ public class DetailFragment extends Fragment { //implements LoaderManager.Loader
         }
 
         return rootView;
-
-//        mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
-//        mDateView = (TextView) rootView.findViewById(R.id.detail_time);
-//        mFriendlyDateView = (TextView) rootView.findViewById(R.id.detail_event);
-//        mDescriptionView = (TextView) rootView.findViewById(R.id.detail_calendar_textview);
-//        mHighTempView = (TextView) rootView.findViewById(R.id.detail_high_textview);
-//        mLowTempView = (TextView) rootView.findViewById(R.id.detail_description);
-//        mHumidityView = (TextView) rootView.findViewById(R.id.detail_humidity_textview);
-//        mWindView = (TextView) rootView.findViewById(R.id.detail_wind_textview);
-//        mPressureView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
-//        return rootView;
-
-
     }
 
     @Override
@@ -159,15 +148,13 @@ public class DetailFragment extends Fragment { //implements LoaderManager.Loader
         super.onActivityCreated(savedInstanceState);
     }
 
-    void onLocationChanged( String newLocation ) {
-        // replace the uri, since the location has changed
-        Uri uri = mUri;
-        if (null != uri) {
-            long date = 565454;
-
-
-            getLoaderManager().restartLoader(DETAIL_LOADER, null, null);
-        }
-    }
+//    void onLocationChanged( String newLocation ) {
+//        // replace the uri, since the location has changed
+//        Uri uri = mUri;
+//        if (null != uri) {
+//            long date = 565454;
+//            getLoaderManager().restartLoader(DETAIL_LOADER, null, null);
+//        }
+//    }
 
 }
