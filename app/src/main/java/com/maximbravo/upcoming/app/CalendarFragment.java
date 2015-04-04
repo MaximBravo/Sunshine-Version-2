@@ -65,7 +65,7 @@ public class CalendarFragment extends Fragment { //implements LoaderManager.Load
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Add this line in order for this fragment to handle menu events.
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
     }
 
     @Override

@@ -18,7 +18,7 @@
 
     <!-- Menu label to fetch updated event info from the server -->
     <string name="action_refresh" translatable="false">Refresh</string>
-    <string name="title_activity_detail">Details</string>
+    <string name="title_activity_detail">Event Details</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Label for the location preference [CHAR LIMIT=30] -->

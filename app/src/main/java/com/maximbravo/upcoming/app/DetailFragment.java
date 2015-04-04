@@ -70,8 +70,7 @@ public class DetailFragment extends Fragment { //implements LoaderManager.Loader
     private TextView mPressureView;
 
     public DetailFragment() {
-        setHasOptionsMenu(true);
-
+        //setHasOptionsMenu(true);
     }
 
     @Override
@@ -110,7 +109,7 @@ public class DetailFragment extends Fragment { //implements LoaderManager.Loader
         if (intent != null && intent.hasExtra("ItemDescription")) {
             String caledarStrDescription = intent.getStringExtra("ItemDescription");
             ((TextView) rootView.findViewById(R.id.detail_description))
-                    .setText("Description" + ": " + caledarStrDescription);
+                    .setText(caledarStrDescription);
         }
 
         return rootView;
